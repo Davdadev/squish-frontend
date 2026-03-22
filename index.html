@@ -29,7 +29,6 @@
     .pickup-banner{background:var(--green);border-bottom:3px solid var(--dark);padding:.7rem 2rem;text-align:center;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--dark);letter-spacing:.3px}
     .pickup-banner a{color:var(--dark);font-weight:800;text-decoration:underline;text-underline-offset:3px}
     .hero{position:relative;z-index:5;background:var(--orange);border-bottom:3px solid var(--dark);padding:3.5rem 2rem 3rem;text-align:center;overflow:hidden}
-    .hero::before{content:'✦ DELIVERY AVAILABLE ✦ STANDARD $10 ✦ EXPRESS $15 ✦ AUSTRALIA WIDE ✦ DELIVERY AVAILABLE ✦ STANDARD $10 ✦ EXPRESS $15 ✦';position:absolute;top:0;left:0;right:0;background:var(--pink);color:#fff;font-family:'Fredoka One',cursive;font-size:.8rem;letter-spacing:2px;padding:.35rem 0;border-bottom:2px solid var(--dark);white-space:nowrap;overflow:hidden}
     .hero h1{font-family:'Lilita One',cursive;font-size:clamp(2.8rem,8vw,5.5rem);color:#fff;text-shadow:4px 4px 0 var(--dark);line-height:1;margin-top:1.2rem}
     .hero h1 span{color:var(--yellow)}
     .hero p{font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:rgba(255,255,255,.9);margin-top:.8rem;max-width:480px;margin-inline:auto}
@@ -136,9 +135,7 @@
   </div>
 </header>
 
-<div class="pickup-banner">
-  🏠 Picking up locally? <a href="p.html">Use the pickup page</a> — no shipping fees!
-</div>
+
 
 <section class="hero">
   <div class="hero-blobs">
@@ -186,7 +183,7 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3LRB3eRuP77suHqcWS5Px008gs0yJSL';
+  const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3RB3eRuP77suHqcWS5Px008gs0yJSL';
   const BACKEND_URL = 'https://web-production-a069b.up.railway.app'; // ← your Railway URL
   const IS_PICKUP   = false; // delivery page
 
