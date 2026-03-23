@@ -142,8 +142,7 @@
   </div>
   <h1>Pick Up Your<br><span>Fidgets Today</span> 🏠</h1>
   <p>Order online, collect locally — no shipping fees, no waiting around.</p>
-
-  v>
+  <div class="pickup-info">📍 Narre Warren South, VIC — arrange pickup after ordering</div>
 </section>
 
 <div class="ticker">
@@ -182,8 +181,8 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3RB3eRuP77suHqcWS5Px008gs0yJSL';
-  const BACKEND_URL = 'https://web-production-a069b.up.railway.app'; // ← your Railway URL
+  const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3LRB3eRuP77suHqcWS5Px008gs0yJSL';
+  const BACKEND_URL = 'https://YOUR-RAILWAY-URL.up.railway.app'; // ← your Railway URL
   const IS_PICKUP   = true; // pickup page — no address collected
 
   const stripe = Stripe(STRIPE_PK);
@@ -245,25 +244,11 @@
     renderProducts();
   }
 
-  async function doCheckout(index,btn){
+  function doCheckout(index,btn){
     const p=sortedProducts()[index];
     if(!p) return;
-    const orig=btn.innerHTML;
-    btn.innerHTML='<span class="spinner"></span> Opening...';
-    btn.disabled=true;
-    try{
-      const res=await fetch(`${BACKEND_URL}/api/checkout`,{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({priceId:p.priceId,pickup:IS_PICKUP})
-      });
-      if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'Checkout failed');}
-      const {sessionId}=await res.json();
-      const {error}=await stripe.redirectToCheckout({sessionId});
-      if(error) throw error;
-    }catch(err){
-      showToast('⚠️ '+err.message);
-      btn.innerHTML=orig;btn.disabled=false;
-    }
+    // Route through upsell page — it handles checkout
+    location.href = `upsell.html?priceId=${encodeURIComponent(p.priceId)}&pickup=${IS_PICKUP}`;
   }
 
   function openModal(index){
