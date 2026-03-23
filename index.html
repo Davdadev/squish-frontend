@@ -248,8 +248,8 @@
   function doCheckout(index,btn) {
     const p=sortedProducts()[index];
     if(!p) return;
-    // Route through upsell page — it handles checkout
-    location.href = `upsell.html?priceId=${encodeURIComponent(p.priceId)}&pickup=${IS_PICKUP}`;
+    // Route through checkout page — it handles checkout
+    location.href = `checkout.html?priceId=${encodeURIComponent(p.priceId)}&pickup=${IS_PICKUP}`;
   }
 
   function openModal(index) {
