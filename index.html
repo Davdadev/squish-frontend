@@ -148,9 +148,20 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     .faq-a{font-size:.92rem;color:#444;font-weight:600;line-height:1.55}
     .contact-list{display:grid;gap:.5rem}
     .contact-link{color:var(--orange);font-weight:800;text-decoration:underline;text-underline-offset:2px}
-    footer{position:relative;z-index:5;background:var(--dark);color:var(--yellow);text-align:center;padding:2rem;font-family:'Fredoka One',cursive;font-size:.95rem;letter-spacing:.5px}
-    footer span{color:var(--pink)}
-    @media(max-width:600px){.hero h1{font-size:2.5rem}.products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem}header{padding:0 1rem}.header-nav{width:100%;padding-bottom:1rem}main{padding:2rem 1rem}}
+    .site-footer{position:relative;z-index:5;background:var(--dark);color:var(--yellow);border-top:3px solid var(--yellow);margin-top:2.5rem}
+    .footer-inner{max-width:1280px;margin:0 auto;padding:2rem 1.2rem 1.4rem}
+    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.5rem;align-items:start}
+    .footer-brand{font-family:'Lilita One',cursive;font-size:1.6rem;line-height:1;color:#fff}
+    .footer-tagline{margin-top:.4rem;font-size:.9rem;font-weight:700;color:rgba(255,255,255,.88);line-height:1.5}
+    .footer-title{font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:.6px;text-transform:uppercase;margin-bottom:.55rem;color:var(--pink)}
+    .footer-links{display:grid;gap:.4rem}
+    .footer-link{color:var(--yellow);font-weight:700;text-decoration:none}
+    .footer-link:hover{text-decoration:underline;text-underline-offset:3px;color:#fff}
+    .footer-bottom{margin-top:1.4rem;padding-top:1rem;border-top:2px dashed rgba(255,217,61,.4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
+    .footer-copy{font-family:'Fredoka One',cursive;font-size:.86rem;letter-spacing:.4px}
+    .footer-copy span{color:var(--pink)}
+    .footer-note{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.8)}
+    @media(max-width:600px){.hero h1{font-size:2.5rem}.products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem}header{padding:0 1rem}.header-nav{width:100%;padding-bottom:1rem}main{padding:2rem 1rem}.footer-top{grid-template-columns:1fr}.footer-inner{padding:1.6rem 1rem 1.2rem}}
   </style>
 </head>
 <body>
@@ -216,7 +227,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="toast" id="toast"></div>
 
-<footer>Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</footer>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">3Dfidgets.shop</div>
+        <p class="footer-tagline">Premium 3D printed fidgets made in Australia for play, focus, and everyday fun.</p>
+      </div>
+
+      <div>
+        <div class="footer-title">Quick Links</div>
+        <div class="footer-links">
+          <a class="footer-link" href="index.html">Shop</a>
+          <a class="footer-link" href="about.html">About</a>
+          <a class="footer-link" href="faq.html">FAQ</a>
+          <a class="footer-link" href="contact.html">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">Support</div>
+        <div class="footer-links">
+          <a class="footer-link" href="p.html">Policies</a>
+          <a class="footer-link" href="checkout.html">Checkout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
+      <div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div>
+    </div>
+  </div>
+</footer>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
@@ -268,7 +311,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="card-footer">
             <div class="card-price"><span class="currency">${sym}</span>${price}</div>
             <button class="buy-btn" onclick="event.stopPropagation();doCheckout(${i},this)" ${inStock?'':'disabled'}>
-              ${inStock?'Buy Now 🛒':'Sold Out'}
+              ${inStock?'Buy Now ':'Sold Out'}
             </button>
           </div>
         </div>
