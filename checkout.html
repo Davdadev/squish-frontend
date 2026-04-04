@@ -88,6 +88,10 @@
     .qty-btn:hover{background:var(--orange);transform:scale(1.1)}
     .qty-num{font-family:'Lilita One',cursive;font-size:1.1rem;color:var(--dark);min-width:20px;text-align:center}
     .check-badge{font-family:'Lilita One',cursive;font-size:.85rem}
+    .color-wrap{margin-top:.55rem}
+    .color-label{font-size:.72rem;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#666;margin-bottom:.25rem}
+    .color-select{width:100%;font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--dark);background:#fff;border:2px solid var(--dark);border-radius:12px;padding:.35rem .5rem;box-shadow:2px 2px 0 var(--dark)}
+    .main-color-wrap{margin-top:.5rem;max-width:240px}
 
     .site-footer{position:relative;z-index:5;background:var(--dark);color:var(--yellow);border-top:3px solid var(--yellow);margin-top:2.5rem}
     .footer-inner{max-width:1280px;margin:0 auto;padding:2rem 1.2rem 1.4rem}
@@ -119,6 +123,7 @@
       <div class="cart-label">In your cart</div>
       <div class="cart-name" id="cartName">Loading...</div>
       <div class="cart-added-items" id="cartAddedItems"></div>
+      <div class="main-color-wrap" id="mainColorWrap"></div>
     </div>
     <div class="cart-price" id="cartPrice">—</div>
   </div>
@@ -207,12 +212,45 @@
 
   let allProducts   = [];
   let mainProduct   = null;
-  let mainProductId = '';
-  let upsellQtys = {}; // { priceId: quantity } for upsell items
+  let mainSelectedColor = '';
+  let upsellSelections = {}; // { priceId: { quantity, color } }
 
   function currSym(c){return{AUD:'A$',USD:'$',GBP:'£',EUR:'€',NZD:'NZ$',CAD:'C$'}[c]||c+' ';}
   function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function escAttr(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function fmt(cents,currency){return currSym((currency||'aud').toUpperCase())+(cents/100).toFixed(2);}
+  function normalizeColorOptions(product){
+    if(!product) return [];
+    const listed = Array.isArray(product.colorOptions) ? product.colorOptions.filter(Boolean) : [];
+    const adjusted = product.colorPriceAdjustments && typeof product.colorPriceAdjustments==='object'
+      ? Object.keys(product.colorPriceAdjustments)
+      : [];
+    const merged = [...listed, ...adjusted].map(c=>String(c).trim()).filter(Boolean);
+    const uniq = [];
+    for(const color of merged){
+      if(!uniq.some(x=>x.toLowerCase()===color.toLowerCase())) uniq.push(color);
+    }
+    return uniq;
+  }
+  function findColorAdjustment(product,color){
+    if(!product || !color || !product.colorPriceAdjustments) return 0;
+    const target = String(color).trim().toLowerCase();
+    for(const [name,delta] of Object.entries(product.colorPriceAdjustments||{})){
+      if(String(name).trim().toLowerCase()===target) return Number(delta)||0;
+    }
+    return 0;
+  }
+  function defaultColorFor(product){
+    const opts = normalizeColorOptions(product);
+    return opts[0] || '';
+  }
+  function colorOptionLabel(product,color){
+    const delta = findColorAdjustment(product,color);
+    const sym = currSym((product?.currency||'aud').toUpperCase());
+    if(delta>0) return `${color} (+${sym}${(delta/100).toFixed(2)})`;
+    if(delta<0) return `${color} (-${sym}${(Math.abs(delta)/100).toFixed(2)})`;
+    return color;
+  }
 
   // ── LOAD PRODUCTS ────────────────────────────────
   async function init() {
@@ -221,21 +259,8 @@
       allProducts = (await res.json()).products || [];
 
       mainProduct = allProducts.find(p => p.priceId === mainPriceId);
-      if (!mainProduct) {
-        const parent = allProducts.find(p => Array.isArray(p.priceOptions) && p.priceOptions.some(o => o.priceId === mainPriceId));
-        if (parent) {
-          const selected = parent.priceOptions.find(o => o.priceId === mainPriceId) || {};
-          mainProduct = {
-            ...parent,
-            priceId: selected.priceId || parent.priceId,
-            price: Number.isInteger(selected.amount) ? selected.amount : parent.price,
-            currency: selected.currency || parent.currency,
-            variantLabel: (selected.label || '').trim(),
-          };
-        }
-      }
       if (!mainProduct) { location.href = shopPage; return; }
-      mainProductId = mainProduct.id;
+      mainSelectedColor = defaultColorFor(mainProduct);
 
       if (!showFreeShipping) {
         document.getElementById('shippingBarWrap').style.display = 'none';
@@ -260,21 +285,47 @@
       imgEl.textContent = EMOJIS[idx % EMOJIS.length];
       imgEl.style.background = COLORS[idx % COLORS.length];
     }
-    document.getElementById('cartName').textContent = mainProduct.variantLabel
-      ? `${mainProduct.name} (${mainProduct.variantLabel})`
-      : mainProduct.name;
+    document.getElementById('cartName').textContent = mainProduct.name;
+
+    const mainOptions = normalizeColorOptions(mainProduct);
+    const colorWrap = document.getElementById('mainColorWrap');
+    if (mainOptions.length) {
+      const optionsHtml = mainOptions.map(color =>
+        `<option value="${escAttr(color)}" ${String(color).toLowerCase()===String(mainSelectedColor).toLowerCase()?'selected':''}>${esc(colorOptionLabel(mainProduct, color))}</option>`
+      ).join('');
+      colorWrap.innerHTML = `
+        <div class="color-label">Choose colour</div>
+        <select class="color-select" onchange="setMainColor(this.value)">${optionsHtml}</select>
+      `;
+    } else {
+      colorWrap.innerHTML = '';
+    }
+
+    updateCartDisplay();
+  }
+
+  function setMainColor(color) {
+    mainSelectedColor = String(color || '').trim();
     updateCartDisplay();
   }
 
   function updateCartDisplay() {
     const sym = currSym((mainProduct.currency||'aud').toUpperCase());
+    const mainAdj = findColorAdjustment(mainProduct, mainSelectedColor);
     let upsellTotal = 0;
     const addedLabels = [];
-    for (const [pid, qty] of Object.entries(upsellQtys)) {
+    for (const [pid, selection] of Object.entries(upsellSelections)) {
+      const qty = Number(selection?.quantity || 0);
+      const selectedColor = String(selection?.color || '').trim();
       const p = allProducts.find(x => x.priceId === pid);
-      if (p) { upsellTotal += (p.price||0) * qty; addedLabels.push(qty > 1 ? `${p.name} x${qty}` : p.name); }
+      if (p && qty > 0) {
+        const adj = findColorAdjustment(p, selectedColor);
+        upsellTotal += ((p.price||0) + adj) * qty;
+        const colorLabel = selectedColor ? ` (${selectedColor})` : '';
+        addedLabels.push(qty > 1 ? `${p.name}${colorLabel} x${qty}` : `${p.name}${colorLabel}`);
+      }
     }
-    const totalCents = (mainProduct.price || 0) + upsellTotal;
+    const totalCents = Math.max(0, (mainProduct.price || 0) + mainAdj) + upsellTotal;
 
     document.getElementById('cartPrice').textContent = sym + (totalCents/100).toFixed(2);
 
@@ -319,7 +370,7 @@
   function renderUpsells() {
     // Show up to 3 products that aren't the main one
     const recs = allProducts
-      .filter(p => p.id !== mainProductId && p.active !== false)
+      .filter(p => p.priceId !== mainPriceId && p.active !== false)
       .slice(0, 3);
 
     const grid = document.getElementById('upsellGrid');
@@ -336,6 +387,15 @@
       const imgHtml = p.image
         ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" />`
         : `<span style="font-size:3.5rem">${emoji}</span>`;
+      const colorOptions = normalizeColorOptions(p);
+      const colorSelect = colorOptions.length
+        ? `<div class="color-wrap">
+            <div class="color-label">Colour</div>
+            <select class="color-select" id="csel-${i}" onchange="event.stopPropagation();onUpsellColorChange('${esc(p.priceId)}',${i},this.value)">
+              ${colorOptions.map(c => `<option value="${escAttr(c)}">${esc(colorOptionLabel(p, c))}</option>`).join('')}
+            </select>
+          </div>`
+        : '';
 
       return `
         <div class="upsell-card" id="ucard-${i}" onclick="toggleUpsell('${esc(p.priceId)}', ${i})">
@@ -345,6 +405,7 @@
           <div class="upsell-body">
             <div class="upsell-name">${esc(p.name)}</div>
             <div class="upsell-price">${price}</div>
+            ${colorSelect}
             <div class="qty-row" id="qrow-${i}" style="display:none">
               <button class="qty-btn" onclick="event.stopPropagation();changeQty('${esc(p.priceId)}',${i},-1)">−</button>
               <span class="qty-num" id="qnum-${i}">1</span>
@@ -356,8 +417,36 @@
     }).join('');
   }
 
+  function getUpsellSelectedColor(priceId, cardIdx) {
+    const existing = upsellSelections[priceId]?.color;
+    if (existing) return existing;
+    const select = document.getElementById(`csel-${cardIdx}`);
+    return select ? String(select.value || '').trim() : '';
+  }
+
+  function onUpsellColorChange(priceId, cardIdx, color) {
+    if (upsellSelections[priceId]) {
+      upsellSelections[priceId].color = String(color || '').trim();
+      updateCartDisplay();
+      return;
+    }
+    const badge = document.getElementById(`cbadge-${cardIdx}`);
+    if (badge && badge.textContent !== '1') badge.textContent = '1';
+  }
+
+  function toggleUpsell(priceId, cardIdx) {
+    if (upsellSelections[priceId]) {
+      changeQty(priceId, cardIdx, -Number(upsellSelections[priceId].quantity || 1));
+      return;
+    }
+    addUpsell(priceId, cardIdx);
+  }
+
   function addUpsell(priceId, cardIdx) {
-    upsellQtys[priceId] = 1;
+    upsellSelections[priceId] = {
+      quantity: 1,
+      color: getUpsellSelectedColor(priceId, cardIdx),
+    };
     const card  = document.getElementById(`ucard-${cardIdx}`);
     const btn   = document.getElementById(`abtn-${cardIdx}`);
     const qrow  = document.getElementById(`qrow-${cardIdx}`);
@@ -370,7 +459,7 @@
   }
 
   function changeQty(priceId, cardIdx, delta) {
-    const current = upsellQtys[priceId] || 0;
+    const current = Number(upsellSelections[priceId]?.quantity || 0);
     const next    = current + delta;
     const card    = document.getElementById(`ucard-${cardIdx}`);
     const btn     = document.getElementById(`abtn-${cardIdx}`);
@@ -379,13 +468,19 @@
 
     if (next <= 0) {
       // Remove item
-      delete upsellQtys[priceId];
+      delete upsellSelections[priceId];
       card.classList.remove('selected');
       qrow.style.display = 'none';
       btn.style.display  = 'block';
       badge.textContent  = '1';
     } else {
-      upsellQtys[priceId] = next;
+      if (!upsellSelections[priceId]) {
+        upsellSelections[priceId] = {
+          quantity: 0,
+          color: getUpsellSelectedColor(priceId, cardIdx),
+        };
+      }
+      upsellSelections[priceId].quantity = next;
       document.getElementById(`qnum-${cardIdx}`).textContent = next;
       badge.textContent = next;
     }
@@ -398,17 +493,26 @@
     btn.innerHTML = '<span class="spinner"></span> Redirecting...';
     btn.disabled = true;
 
-    // Build flat array with duplicates for quantity (e.g. qty 2 = two entries)
-    const allPriceIds = [mainPriceId];
-    for (const [pid, qty] of Object.entries(upsellQtys)) {
-      for (let i = 0; i < qty; i++) allPriceIds.push(pid);
+    const items = [{
+      priceId: mainPriceId,
+      quantity: 1,
+      color: mainSelectedColor || '',
+    }];
+    for (const [pid, selection] of Object.entries(upsellSelections)) {
+      const quantity = Number(selection?.quantity || 0);
+      if (quantity <= 0) continue;
+      items.push({
+        priceId: pid,
+        quantity,
+        color: String(selection?.color || '').trim(),
+      });
     }
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceIds: allPriceIds, pickup: isPickup })
+        body: JSON.stringify({ items, pickup: isPickup })
       });
       if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.error||'Checkout failed'); }
       const { sessionId } = await res.json();
@@ -423,7 +527,7 @@
 
   function skipUpsell() {
     // Go straight to checkout with just the original item
-    upsellQtys = {};
+    upsellSelections = {};
     proceedToCheckout();
   }
 

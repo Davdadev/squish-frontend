@@ -103,9 +103,6 @@
     .modal-desc{font-size:.95rem;font-weight:600;color:#555;line-height:1.6;margin-bottom:1.5rem}
     .modal-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
     .meta-pill{background:var(--bg);border:2px solid var(--dark);border-radius:100px;font-size:.8rem;font-weight:700;padding:.25rem .75rem;color:var(--dark)}
-    .variant-picker{margin-bottom:1.1rem}
-    .variant-label{display:block;font-family:'Fredoka One',cursive;font-size:.82rem;color:#666;margin-bottom:.35rem;letter-spacing:.2px;text-transform:uppercase}
-    .variant-select{width:100%;font-family:'Nunito',sans-serif;font-weight:700;font-size:.95rem;color:var(--dark);background:#fff;border:2.5px solid var(--dark);border-radius:12px;padding:.55rem .7rem;box-shadow:2px 2px 0 var(--dark)}
     .modal-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
     .modal-price{font-family:'Lilita One',cursive;font-size:2.2rem;color:var(--dark)}
     .modal-buy-btn{font-family:'Fredoka One',cursive;font-size:1.1rem;padding:.7rem 2rem;background:var(--green);color:#fff;border:2.5px solid var(--dark);border-radius:100px;box-shadow:4px 4px 0 var(--dark);cursor:pointer;transition:all .15s}
@@ -292,61 +289,20 @@
     renderProducts();
   }
 
-  function doCheckout(index,btn,selectedPriceId=''){
+  function doCheckout(index,btn){
     const p=sortedProducts()[index];
     if(!p) return;
-    const selected = resolveSelectedPrice(p, selectedPriceId);
     // Route through upsell page — it handles checkout
-    location.href = `checkout.html?priceId=${encodeURIComponent(selected.priceId)}&pickup=${IS_PICKUP}`;
-  }
-
-  function getPriceOptions(product){
-    const opts = Array.isArray(product?.priceOptions) ? product.priceOptions.filter(o => o && o.priceId) : [];
-    if (opts.length) return opts;
-    return [{ priceId: product.priceId, amount: product.price || 0, currency: product.currency || 'aud', label: '' }];
-  }
-
-  function resolveSelectedPrice(product, selectedPriceId){
-    const opts = getPriceOptions(product);
-    if (selectedPriceId) {
-      const match = opts.find(o => o.priceId === selectedPriceId);
-      if (match) return match;
-    }
-    return opts[0];
-  }
-
-  function priceOptionLabel(option, index){
-    const raw = (option.label || '').trim();
-    if (raw) return raw;
-    return `Option ${index + 1}`;
-  }
-
-  function syncVariantPrice(index){
-    const select = document.getElementById(`variant-selector-${index}`);
-    const priceEl = document.getElementById(`modal-price-${index}`);
-    if (!select || !priceEl) return;
-    const selected = select.options[select.selectedIndex];
-    const amount = Number(selected?.dataset?.amount || 0);
-    const currency = String(selected?.dataset?.currency || 'aud').toUpperCase();
-    priceEl.textContent = `${currSym(currency)}${(amount/100).toFixed(2)}`;
+    location.href = `checkout.html?priceId=${encodeURIComponent(p.priceId)}&pickup=${IS_PICKUP}`;
   }
 
   function openModal(index){
     const p=sortedProducts()[index];
     if(!p) return;
-    const options = getPriceOptions(p);
-    const selected = options[0];
-    const price=((selected.amount || 0)/100).toFixed(2);
-    const sym=currSym(String(selected.currency||p.currency||'aud').toUpperCase());
+    const price=p.price?(p.price/100).toFixed(2):'0.00';
+    const sym=currSym((p.currency||'aud').toUpperCase());
     const inStock=p.active!==false;
     const imgHtml=p.image?`<img class="modal-img" src="${esc(p.image)}" alt="${esc(p.name)}" />`:`<div class="modal-img-placeholder" style="background:${COLORS[index%COLORS.length]}">${EMOJIS[index%EMOJIS.length]}</div>`;
-    const variantHtml = options.length > 1 ? `
-        <div class="variant-picker">
-          <label class="variant-label" for="variant-selector-${index}">Choose option</label>
-          <select class="variant-select" id="variant-selector-${index}" onchange="syncVariantPrice(${index})">
-            ${options.map((o, oi) => `<option value="${esc(o.priceId)}" data-amount="${Number(o.amount||0)}" data-currency="${esc(o.currency||p.currency||'aud')}">${esc(priceOptionLabel(o, oi))} — ${fmt(Number(o.amount||0), o.currency||p.currency||'aud')}</option>`).join('')}
-          </select>
-        </div>` : '';
     document.getElementById('modalContent').innerHTML=`
       ${imgHtml}
       <div class="modal-body">
@@ -359,10 +315,9 @@
      
           ${inStock?'<span class="meta-pill" style="background:#d1fae5">✅ In Stock</span>':'<span class="meta-pill" style="background:#fee2e2">❌ Sold Out</span>'}
         </div>
-        ${variantHtml}
         <div class="modal-footer">
-          <div class="modal-price" id="modal-price-${index}">${sym}${price}</div>
-          <button class="modal-buy-btn" onclick="doCheckout(${index},this,document.getElementById('variant-selector-${index}')?.value||'')" ${inStock?'':'disabled'}>
+          <div class="modal-price">${sym}${price}</div>
+          <button class="modal-buy-btn" onclick="doCheckout(${index},this)" ${inStock?'':'disabled'}>
             ${inStock?'🏠 Pickup Now':'Sold Out'}
           </button>
         </div>
@@ -384,7 +339,6 @@
     clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
   }
   function currSym(c){return{AUD:'A$',USD:'$',GBP:'£',EUR:'€',NZD:'NZ$',CAD:'C$'}[c]||c+' ';}
-  function fmt(cents,currency){return currSym((currency||'aud').toUpperCase())+(Number(cents||0)/100).toFixed(2);}
   function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
   loadProducts();
