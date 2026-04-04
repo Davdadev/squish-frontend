@@ -207,6 +207,7 @@
 
   let allProducts   = [];
   let mainProduct   = null;
+  let mainProductId = '';
   let upsellQtys = {}; // { priceId: quantity } for upsell items
 
   function currSym(c){return{AUD:'A$',USD:'$',GBP:'£',EUR:'€',NZD:'NZ$',CAD:'C$'}[c]||c+' ';}
@@ -220,7 +221,21 @@
       allProducts = (await res.json()).products || [];
 
       mainProduct = allProducts.find(p => p.priceId === mainPriceId);
+      if (!mainProduct) {
+        const parent = allProducts.find(p => Array.isArray(p.priceOptions) && p.priceOptions.some(o => o.priceId === mainPriceId));
+        if (parent) {
+          const selected = parent.priceOptions.find(o => o.priceId === mainPriceId) || {};
+          mainProduct = {
+            ...parent,
+            priceId: selected.priceId || parent.priceId,
+            price: Number.isInteger(selected.amount) ? selected.amount : parent.price,
+            currency: selected.currency || parent.currency,
+            variantLabel: (selected.label || '').trim(),
+          };
+        }
+      }
       if (!mainProduct) { location.href = shopPage; return; }
+      mainProductId = mainProduct.id;
 
       if (!showFreeShipping) {
         document.getElementById('shippingBarWrap').style.display = 'none';
@@ -245,7 +260,9 @@
       imgEl.textContent = EMOJIS[idx % EMOJIS.length];
       imgEl.style.background = COLORS[idx % COLORS.length];
     }
-    document.getElementById('cartName').textContent = mainProduct.name;
+    document.getElementById('cartName').textContent = mainProduct.variantLabel
+      ? `${mainProduct.name} (${mainProduct.variantLabel})`
+      : mainProduct.name;
     updateCartDisplay();
   }
 
@@ -302,7 +319,7 @@
   function renderUpsells() {
     // Show up to 3 products that aren't the main one
     const recs = allProducts
-      .filter(p => p.priceId !== mainPriceId && p.active !== false)
+      .filter(p => p.id !== mainProductId && p.active !== false)
       .slice(0, 3);
 
     const grid = document.getElementById('upsellGrid');
