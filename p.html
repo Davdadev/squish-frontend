@@ -62,9 +62,6 @@
     .card-body{padding:1.2rem 1.3rem 1.4rem}
     .card-name{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--dark);line-height:1.2;margin-bottom:.4rem}
     .card-desc{font-size:.85rem;font-weight:600;color:#666;line-height:1.4;margin-bottom:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .color-wrap{margin:0 0 1rem}
-    .color-label{font-size:.72rem;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#666;margin-bottom:.25rem}
-    .color-select{width:100%;font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--dark);background:#fff;border:2px solid var(--dark);border-radius:12px;padding:.35rem .5rem;box-shadow:2px 2px 0 var(--dark)}
     .card-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
     .card-price{font-family:'Lilita One',cursive;font-size:1.5rem;color:var(--dark)}
     .card-price .currency{font-size:.9rem;vertical-align:super}
@@ -237,50 +234,6 @@
   const EMOJIS = ['🦅','🌀','🎯','⭐','🧩','🎪','🎨','🎭','🎰','🎳'];
   const COLORS = ['#6BCB77','#4ECDC4','#FFD93D','#A855F7','#60A5FA','#FF6B35','#F472B6','#FF4D8D'];
   let allProducts=[], currentSort='default';
-  const selectedColors = {};
-
-  function normalizeColorOptions(product){
-    if(!product) return [];
-    const listed = Array.isArray(product.colorOptions) ? product.colorOptions.filter(Boolean) : [];
-    const adjusted = product.colorPriceAdjustments && typeof product.colorPriceAdjustments==='object'
-      ? Object.keys(product.colorPriceAdjustments)
-      : [];
-    const merged = [...listed, ...adjusted].map(c=>String(c).trim()).filter(Boolean);
-    const uniq = [];
-    for(const color of merged){
-      if(!uniq.some(x=>x.toLowerCase()===color.toLowerCase())) uniq.push(color);
-    }
-    return uniq;
-  }
-
-  function findColorAdjustment(product,color){
-    if(!product || !color || !product.colorPriceAdjustments) return 0;
-    const target = String(color).trim().toLowerCase();
-    for(const [name,delta] of Object.entries(product.colorPriceAdjustments||{})){
-      if(String(name).trim().toLowerCase()===target) return Number(delta)||0;
-    }
-    return 0;
-  }
-
-  function defaultColorFor(product){
-    return normalizeColorOptions(product)[0] || '';
-  }
-
-  function colorOptionLabel(product,color){
-    const delta = findColorAdjustment(product,color);
-    const sym = currSym((product?.currency||'aud').toUpperCase());
-    if(delta>0) return `${color} (+${sym}${(delta/100).toFixed(2)})`;
-    if(delta<0) return `${color} (-${sym}${(Math.abs(delta)/100).toFixed(2)})`;
-    return color;
-  }
-
-  function getSelectedColor(priceId, product){
-    return selectedColors[priceId] || defaultColorFor(product);
-  }
-
-  function setSelectedColor(priceId, color){
-    selectedColors[priceId] = String(color || '').trim();
-  }
 
   async function loadProducts(){
     try{
@@ -311,14 +264,6 @@
       const sym=currSym((p.currency||'aud').toUpperCase());
       const inStock=p.active!==false;
       const img=p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" />`:`<div class="card-image-placeholder">${EMOJIS[i%EMOJIS.length]}</div>`;
-      const colorOptions = normalizeColorOptions(p);
-      const colorSelect = colorOptions.length ? `
-          <div class="color-wrap">
-            <div class="color-label">Choose colour</div>
-            <select class="color-select" onclick="event.stopPropagation()" onchange="event.stopPropagation();setSelectedColor('${esc(p.priceId)}', this.value)">
-              ${colorOptions.map(c => `<option value="${esc(c)}" ${getSelectedColor(p.priceId, p).toLowerCase()===String(c).toLowerCase()?'selected':''}>${esc(colorOptionLabel(p, c))}</option>`).join('')}
-            </select>
-          </div>` : '';
       return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="openModal(${i})">
         <div class="card-image-wrap" style="--accent:${COLORS[i%COLORS.length]}">${img}
           <div class="card-badge${inStock?'':' sold-out'}">${inStock?'✦ In Stock':'✕ Sold Out'}</div>
@@ -326,7 +271,6 @@
         <div class="card-body">
           <div class="card-name">${esc(p.name)}</div>
           <div class="card-desc">${esc(p.description||'A beautifully crafted 3D printed fidget toy.')}</div>
-          ${colorSelect}
           <div class="card-footer">
             <div class="card-price"><span class="currency">${sym}</span>${price}</div>
             <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
@@ -349,9 +293,7 @@
     const p=allProducts.find(product => product.priceId === priceId) || sortedProducts().find(product => product.priceId === priceId);
     if(!p) return;
     // Route through upsell page — it handles checkout
-    const color = getSelectedColor(p.priceId, p);
-    const colorQuery = color ? `&color=${encodeURIComponent(color)}` : '';
-    location.href = `checkout.html?priceId=${encodeURIComponent(p.priceId)}&pickup=${IS_PICKUP}${colorQuery}`;
+    location.href = `checkout.html?priceId=${encodeURIComponent(p.priceId)}&pickup=${IS_PICKUP}`;
   }
 
   function openModal(index){
@@ -361,20 +303,11 @@
     const sym=currSym((p.currency||'aud').toUpperCase());
     const inStock=p.active!==false;
     const imgHtml=p.image?`<img class="modal-img" src="${esc(p.image)}" alt="${esc(p.name)}" />`:`<div class="modal-img-placeholder" style="background:${COLORS[index%COLORS.length]}">${EMOJIS[index%EMOJIS.length]}</div>`;
-    const colorOptions = normalizeColorOptions(p);
-    const colorSelect = colorOptions.length ? `
-        <div class="color-wrap">
-          <div class="color-label">Choose colour</div>
-          <select class="color-select" onclick="event.stopPropagation()" onchange="setSelectedColor('${esc(p.priceId)}', this.value)">
-            ${colorOptions.map(c => `<option value="${esc(c)}" ${getSelectedColor(p.priceId, p).toLowerCase()===String(c).toLowerCase()?'selected':''}>${esc(colorOptionLabel(p, c))}</option>`).join('')}
-          </select>
-        </div>` : '';
     document.getElementById('modalContent').innerHTML=`
       ${imgHtml}
       <div class="modal-body">
         <div class="modal-name">${esc(p.name)}</div>
         <div class="modal-desc">${esc(p.description||'A beautifully crafted 3D printed fidget toy.')}</div>
-        ${colorSelect}
         <div class="modal-meta">
           <span class="meta-pill">🖨️ 3D Printed</span>
           <span class="meta-pill">🌱 Eco PLA</span>
