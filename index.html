@@ -36,10 +36,13 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
   <meta property="og:title" content="3D Printed Fidgets Australia | 3Dfidgets.shop" />
   <meta property="og:description" content="Shop premium 3D printed fidgets in Australia with fast dispatch and secure checkout." />
   <meta property="og:url" content="https://3dfidgets.shop/" />
+  <meta property="og:image" content="https://3dfidgets.shop/favicon.svg" />
+  <meta property="og:image:alt" content="3Dfidgets.shop" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="3D Printed Fidgets Australia | 3Dfidgets.shop" />
   <meta name="twitter:description" content="Shop premium 3D printed fidgets in Australia with fast dispatch and secure checkout." />
+  <meta name="twitter:image" content="https://3dfidgets.shop/favicon.svg" />
 
   <script type="application/ld+json">
     {
@@ -67,6 +70,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       ]
     }
   </script>
+  <script type="application/ld+json" id="products-jsonld">{"@context":"https://schema.org","@graph":[]}</script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -320,8 +324,55 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const res = await fetch(`${BACKEND_URL}/api/products`);
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
       allProducts = (await res.json()).products || [];
+      updateSeoFromProducts(allProducts);
       renderProducts();
     } catch(err) { showError(err.message); }
+  }
+
+  function absUrl(url){
+    try { return new URL(url, location.origin).toString(); }
+    catch { return ''; }
+  }
+
+  function pickPrimaryProductImage(products = []){
+    return products.find(p => typeof p?.image === 'string' && p.image.trim())?.image || '';
+  }
+
+  function updateSeoFromProducts(products = []) {
+    const primaryImage = pickPrimaryProductImage(products);
+    if (primaryImage) {
+      const full = absUrl(primaryImage);
+      const ogImage = document.querySelector('meta[property="og:image"]');
+      const twImage = document.querySelector('meta[name="twitter:image"]');
+      if (ogImage) ogImage.setAttribute('content', full);
+      if (twImage) twImage.setAttribute('content', full);
+    }
+
+    const graph = products
+      .filter(p => p && p.priceId)
+      .slice(0, 24)
+      .map(p => ({
+        '@type': 'Product',
+        name: p.name || '3D Printed Fidget',
+        description: p.description || '3D printed fidget toy',
+        image: p.image ? [absUrl(p.image)] : undefined,
+        sku: p.priceId,
+        offers: {
+          '@type': 'Offer',
+          url: `https://3dfidgets.shop/checkout.html?priceId=${encodeURIComponent(p.priceId)}&pickup=false`,
+          priceCurrency: String(p.currency || 'AUD').toUpperCase(),
+          price: ((Number(p.price || 0)) / 100).toFixed(2),
+          availability: p.active === false ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+        },
+      }));
+
+    const el = document.getElementById('products-jsonld');
+    if (el) {
+      el.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': graph,
+      });
+    }
   }
 
   function sortedProducts() {
