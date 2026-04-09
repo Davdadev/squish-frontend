@@ -249,7 +249,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <main>
-  <div class="section-title">🛍️ Shop All Fidgets</div>
+  <div class="section-title">Shop All Fidgets</div>
   <div class="filter-bar">
     <span class="filter-label">Sort:</span>
     <button class="filter-btn active" onclick="setSort(this,'default')">Featured</button>
@@ -279,7 +279,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="footer-top">
       <div>
         <div class="footer-brand">3Dfidgets.shop</div>
-        <p class="footer-tagline">Premium 3D printed fidgets made in Australia for play, focus, and everyday fun.</p>
+        <p class="footer-tagline">Premium 3D printed fidgets made in Western Australia for play, focus, fidgeting and everyday fun.</p>
       </div>
 
       <div>
@@ -397,7 +397,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const img=p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" />`:`<div class="card-image-placeholder">${EMOJIS[i%EMOJIS.length]}</div>`;
       return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="openModal(${i})">
         <div class="card-image-wrap" style="--accent:${COLORS[i%COLORS.length]}">${img}
-          <div class="card-badge${inStock?'':' sold-out'}">${inStock?'✦ In Stock':'✕ Sold Out'}</div>
+          <div class="card-badge${inStock?'':' sold-out'}">${inStock?'In Stock':'✕ Sold Out'}</div>
         </div>
         <div class="card-body">
           <div class="card-name">${esc(p.name)}</div>
