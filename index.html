@@ -231,6 +231,18 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       .footer-inner{padding:1.6rem 1rem 1.2rem}
     }
   </style>
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var hero = document.querySelector('.hero[data-bg]');
+      if (hero && hero.getAttribute('data-bg')) {
+        hero.style.backgroundImage = 'url(' + hero.getAttribute('data-bg') + ')';
+        hero.style.backgroundSize = 'cover';
+        hero.style.backgroundPosition = 'center';
+        hero.style.backgroundRepeat = 'no-repeat';
+      }
+    });
+  </script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -252,7 +264,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
-<section class="hero">
+<!-- To use a background image, add data-bg="images/yourimage.jpg" to the section below -->
+<section class="hero" data-bg="Endless_Tools_2026-04-22_03-30-42.jpeg">
   <div class="hero-blobs">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
