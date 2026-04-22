@@ -196,14 +196,19 @@
   const EMOJIS = ['🦅','🌀','🎯','⭐','🧩','🎪','🎨','🎭','🎰','🎳'];
   const COLORS = ['#FFD93D','#4ECDC4','#FF4D8D','#A855F7','#6BCB77','#FF6B35','#60A5FA','#F472B6'];
 
+  // Read state from URL params (set by index.html when clicking Buy Now)
+  const params   = new URLSearchParams(location.search);
+  const mainPriceId = params.get('priceId');
+  const isPickup    = params.get('pickup') === 'true';
+  const showFreeShipping = !isPickup;
+  const shopPage    = isPickup ? 'p.html' : 'index.html';
 
-  // Use cart.js for cart logic
+  // If no priceId in URL — redirect back to shop
+  if (!mainPriceId) { location.href = 'index.html'; }
+
   let allProducts   = [];
-  let cartItems     = [];
+  let mainProduct   = null;
   let upsellSelections = {}; // { priceId: { quantity } }
-  let isPickup      = false;
-  let showFreeShipping = true;
-  const shopPage    = 'index.html';
 
   function currSym(c){return{AUD:'A$',USD:'$',GBP:'£',EUR:'€',NZD:'NZ$',CAD:'C$'}[c]||c+' ';}
   function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -215,18 +220,9 @@
       const res = await fetch(`${BACKEND_URL}/api/products`);
       allProducts = (await res.json()).products || [];
 
-      // Load cart from localStorage (cart.js)
-      if (typeof getCart === 'function') {
-        cartItems = getCart();
-      } else {
-        cartItems = [];
-      }
-      if (!cartItems.length) { location.href = shopPage; return; }
+      mainProduct = allProducts.find(p => p.priceId === mainPriceId);
+      if (!mainProduct) { location.href = shopPage; return; }
 
-      // Optionally, read pickup from URL
-      const params = new URLSearchParams(location.search);
-      isPickup = params.get('pickup') === 'true';
-      showFreeShipping = !isPickup;
       if (!showFreeShipping) {
         document.getElementById('shippingBarWrap').style.display = 'none';
       }
@@ -243,42 +239,22 @@
   // ── CART SUMMARY ─────────────────────────────────
   function renderCartSummary() {
     const imgEl = document.getElementById('cartImg');
-    const nameEl = document.getElementById('cartName');
-    const addedEl = document.getElementById('cartAddedItems');
-    const priceEl = document.getElementById('cartPrice');
-    if (!cartItems.length) return;
-    // Show first product image or emoji
-    const first = cartItems[0];
-    const prod = allProducts.find(p => p.priceId === first.priceId);
-    if (prod && prod.image) {
-      imgEl.innerHTML = `<img src="${esc(prod.image)}" alt="${esc(prod.name)}" />`;
+    if (mainProduct.image) {
+      imgEl.innerHTML = `<img src="${esc(mainProduct.image)}" alt="${esc(mainProduct.name)}" />`;
     } else {
-      const idx = allProducts.indexOf(prod);
+      const idx = allProducts.indexOf(mainProduct);
       imgEl.textContent = EMOJIS[idx % EMOJIS.length];
       imgEl.style.background = COLORS[idx % COLORS.length];
     }
-    // List all cart items
-    nameEl.textContent = cartItems.map(item => {
-      const p = allProducts.find(x => x.priceId === item.priceId);
-      return p ? p.name + (item.qty > 1 ? ` x${item.qty}` : '') : '';
-    }).filter(Boolean).join(', ');
+    document.getElementById('cartName').textContent = mainProduct.name;
+
     updateCartDisplay();
   }
 
   function updateCartDisplay() {
-    // Sum all cart items and upsells
-    let currency = 'AUD';
-    let totalCents = 0;
-    const addedLabels = [];
-    cartItems.forEach(item => {
-      const p = allProducts.find(x => x.priceId === item.priceId);
-      if (p) {
-        currency = p.currency || currency;
-        totalCents += (p.price||0) * (item.qty||1);
-        addedLabels.push(p.name + (item.qty > 1 ? ` x${item.qty}` : ''));
-      }
-    });
+    const sym = currSym((mainProduct.currency||'aud').toUpperCase());
     let upsellTotal = 0;
+    const addedLabels = [];
     for (const [pid, selection] of Object.entries(upsellSelections)) {
       const qty = Number(selection?.quantity || 0);
       const p = allProducts.find(x => x.priceId === pid);
@@ -287,15 +263,22 @@
         addedLabels.push(qty > 1 ? `${p.name} x${qty}` : p.name);
       }
     }
-    totalCents += upsellTotal;
-    const sym = currSym((currency||'aud').toUpperCase());
+    const totalCents = Math.max(0, (mainProduct.price || 0)) + upsellTotal;
+
     document.getElementById('cartPrice').textContent = sym + (totalCents/100).toFixed(2);
-    document.getElementById('cartAddedItems').textContent = addedLabels.length ? '+ ' + addedLabels.join(', ') : '';
+
+    if (addedLabels.length) {
+      document.getElementById('cartAddedItems').textContent = '+ ' + addedLabels.join(', ');
+    } else {
+      document.getElementById('cartAddedItems').textContent = '';
+    }
+
     if (showFreeShipping) {
       const toGo = Math.max(0, FREE_SHIPPING_THRESHOLD - totalCents);
       document.getElementById('totalPreview').textContent =
         `Total: ${sym}${(totalCents/100).toFixed(2)}` +
         (toGo > 0 ? ` · Add ${sym}${(toGo/100).toFixed(2)} for free shipping` : ' · 🎉 Free shipping unlocked!');
+
       updateShippingBar(totalCents);
     } else {
       document.getElementById('totalPreview').textContent = `Total: ${sym}${(totalCents/100).toFixed(2)}`;
@@ -419,25 +402,19 @@
     btn.innerHTML = '<span class="spinner"></span> Redirecting...';
     btn.disabled = true;
 
-    // Merge cart items and upsells
-    const items = [];
-    cartItems.forEach(item => {
-      items.push({
-        priceId: item.priceId,
-        quantity: item.qty || 1,
-        color: '',
-      });
-    });
+    const items = [{
+      priceId: mainPriceId,
+      quantity: 1,
+      color: '',
+    }];
     for (const [pid, selection] of Object.entries(upsellSelections)) {
       const quantity = Number(selection?.quantity || 0);
       if (quantity <= 0) continue;
-      // If already in cart, increment quantity
-      const idx = items.findIndex(x => x.priceId === pid);
-      if (idx > -1) {
-        items[idx].quantity += quantity;
-      } else {
-        items.push({ priceId: pid, quantity, color: '' });
-      }
+      items.push({
+        priceId: pid,
+        quantity,
+        color: '',
+      });
     }
 
     try {
@@ -463,15 +440,7 @@
     proceedToCheckout();
   }
 
-  // Load cart.js if not present
-  if (typeof getCart === 'undefined') {
-    var s = document.createElement('script');
-    s.src = 'cart.js';
-    s.onload = init;
-    document.body.appendChild(s);
-  } else {
-    init();
-  }
+  init();
 </script>
 </body>
 </html>
