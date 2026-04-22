@@ -29,6 +29,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .logo-wrap{display:flex;align-items:center;gap:.75rem;padding:1.2rem 0}
     .logo-icon{width:52px;height:52px;background:var(--dark);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;animation:wiggle 3s ease-in-out infinite;flex-shrink:0}
     @keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+    <!-- Embedded Checkout Modal -->
+    <div id="checkoutModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:10000;align-items:center;justify-content:center;">
+      <div style="background:#fff9f0;max-width:700px;width:95vw;margin:auto;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,0.07);padding:2rem;position:relative;">
+        <button onclick="closeCheckoutModal()" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;background:none;border:none;cursor:pointer;">&times;</button>
+        <h1 style="font-family:'Lilita One',cursive;font-size:2.2rem;margin-bottom:1.5rem;">Checkout</h1>
+        <div id="checkoutCartList"></div>
+        <div class="cart-total" id="checkoutCartTotal" style="text-align:right;font-size:1.3rem;font-family:'Fredoka One',cursive;margin-bottom:2rem;">Total: A$0.00</div>
+        <form id="checkoutForm" onsubmit="submitCheckout(event)">
+          <input type="text" name="name" placeholder="Full Name" required style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #ccc;font-size:1rem;">
+          <input type="email" name="email" placeholder="Email" required style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #ccc;font-size:1rem;">
+          <input type="text" name="address" placeholder="Shipping Address" required style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #ccc;font-size:1rem;">
+          <button type="submit" class="checkout-btn" style="display:block;width:100%;background:#ff6b35;color:#fff;font-family:'Fredoka One',cursive;font-size:1.2rem;padding:1rem;border:none;border-radius:100px;cursor:pointer;box-shadow:2px 2px 0 #1a1a2e;transition:background 0.15s;">Place Order</button>
+        </form>
+        <div id="checkoutSuccess" style="display:none;text-align:center;color:#6BCB77;font-size:1.2rem;margin-top:2rem;">Thank you for your order!</div>
+      </div>
+    </div>
     .logo-text{font-family:'Lilita One',cursive;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--dark);line-height:1}
     .logo-sub{font-size:.75rem;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
     .header-badges{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
@@ -203,7 +219,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
     </nav>
-  </div>
+    <div id="cart-icon" onclick="goToCartPage()">
+      <span style="font-size:2.5rem;">🛒</span>
+      <span id="cart-count" style="position:absolute;top:-8px;right:-8px;background:var(--pink);color:#fff;font-size:.9rem;font-family:'Fredoka One',cursive;padding:2px 7px;border-radius:100px;border:2px solid var(--dark);min-width:22px;text-align:center;">0</span>
+    </div>
   <div class="header-blobs">
     <div class="header-blob header-blob-1"></div>
     <div class="header-blob header-blob-2"></div>
@@ -213,9 +232,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="header-subtext">Now with free delivery on orders over $50!</div>
 </header>
 <style>
+      #cart-icon {
+        position: absolute;
+        top: 24px;
+        right: 32px;
+        cursor: pointer;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+      }
+      @media (max-width: 900px) {
+        #cart-icon {
+          top: 12px;
+          right: 12px;
+        }
+      }
     .custom-header {
   width: 100%;
-  min-height: 520px;
+  min-height: px;
   position: relative;
   background: #FF6B35 url('Endless_Tools_2026-04-22_03-30-42.jpeg') center/cover no-repeat;
   overflow: hidden;
@@ -366,7 +402,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 }
 @media (max-width: 900px) {
   .header-title {
-    font-size: 4.5rem;
+    font-size: 50;
     max-width: 99vw;
     margin-top: 18px;
     padding: 0 0.7rem;
@@ -493,6 +529,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div><div class="skeleton-footer"><div class="skeleton skeleton-price"></div><div class="skeleton skeleton-btn"></div></div></div>
   </div>
 </main>
+  <script>
+    // Checkout Modal Logic
+    function openCheckoutModal() {
+      renderCheckoutCart();
+      document.getElementById('checkoutModal').style.display = 'flex';
+    }
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').style.display = 'none';
+      document.getElementById('checkoutSuccess').style.display = 'none';
+      document.getElementById('checkoutForm').style.display = '';
+    }
+    function renderCheckoutCart() {
+      // Assume cart is stored in localStorage as 'cart'
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let cartList = '';
+      let total = 0;
+      if (cart.length === 0) {
+        cartList = '<div class="empty-cart">Your cart is empty.</div>';
+      } else {
+        cartList = '<ul class="cart-list">';
+        cart.forEach(item => {
+          let price = (item.price / 100).toFixed(2);
+          total += item.price * item.qty;
+          cartList += `<li class="cart-item">
+            <img class="cart-item-img" src="${item.image || ''}" alt="${item.name || ''}">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.name || ''}</div>
+              <div class="cart-item-price">A$${price}</div>
+            </div>
+            <div class="cart-item-controls">
+              <span>Qty: ${item.qty}</span>
+            </div>
+          </li>`;
+        });
+        cartList += '</ul>';
+      }
+      document.getElementById('checkoutCartList').innerHTML = cartList;
+      document.getElementById('checkoutCartTotal').innerText = 'Total: A$' + (total/100).toFixed(2);
+    }
+    function submitCheckout(e) {
+      e.preventDefault();
+      // Simulate order placement
+      document.getElementById('checkoutForm').style.display = 'none';
+      document.getElementById('checkoutSuccess').style.display = 'block';
+      // Optionally clear cart
+      localStorage.removeItem('cart');
+      setTimeout(() => {
+        closeCheckoutModal();
+        // Optionally reload page or update cart icon
+        location.reload();
+      }, 2000);
+    }
+    // Optionally, hook up the cart icon or checkout button to openCheckoutModal()
+    // Example: document.getElementById('checkoutBtn').onclick = openCheckoutModal;
+  </script>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal">
@@ -528,22 +619,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div>
-        <div class="payment-methods-bar" style="display:flex;gap:1.5rem;align-items:center;justify-content:center;margin:1.5rem 0 2rem 0;flex-wrap:wrap">
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" title="Visa" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/mastercard-logo.png" alt="Mastercard" title="Mastercard" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/paypal.png" alt="PayPal" title="PayPal" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/apple-pay.png" alt="Apple Pay" title="Apple Pay" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/google-pay-india.png" alt="Google Pay" title="Google Pay" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/jcb.png" alt="JCB" title="JCB" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
-          <img class="pm-icon" src="https://img.icons8.com/color/48/000000/klarna.png" alt="Klarna" title="Klarna" width="48" height="32" loading="lazy" onerror="this.style.display='none'"/>
+      <div style="flex:1;display:flex;justify-content:center;align-items:center;">
+        <div id="cart-icon" style="cursor:pointer;position:relative;" onclick="goToCartPage()">
+          <span style="font-size:2.5rem;">🛒</span>
+          <span id="cart-count" style="position:absolute;top:-8px;right:-8px;background:var(--pink);color:#fff;font-size:.9rem;font-family:'Fredoka One',cursive;padding:2px 7px;border-radius:100px;border:2px solid var(--dark);min-width:22px;text-align:center;">0</span>
         </div>
-        <div class="footer-title">Quick Links</div>
-        <div class="footer-links">
-          <a class="footer-link" href="index.html">Shop</a>
-          <a class="footer-link" href="about.html">About</a>
-          <a class="footer-link" href="faq.html">FAQ</a>
-          <a class="footer-link" href="returns.html">Returns</a>
-        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </nav>
       </div>
 
       <div>
@@ -650,15 +736,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const img=p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" />`:`<div class="card-image-placeholder">${EMOJIS[i%EMOJIS.length]}</div>`;
       return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="openModal(${i})">
         <div class="card-image-wrap" style="--accent:${COLORS[i%COLORS.length]}">${img}
-          <div class="card-badge${inStock?'':' sold-out'}">${inStock?'In Stock':'✕ Sold Out'}</div>
+          
         </div>
         <div class="card-body">
           <div class="card-name">${esc(p.name)}</div>
           <div class="card-desc">${esc(p.description||'A beautifully crafted 3D printed fidget toy.')}</div>
           <div class="card-footer">
             <div class="card-price"><span class="currency">${sym}</span>${price}</div>
-            <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
-              ${inStock?'Buy Now ':'Sold Out'}
+            <button class="buy-btn" onclick="event.stopPropagation();addToCart({priceId: '${esc(p.priceId)}', name: '${esc(p.name)}', price: ${p.price}, image: '${esc(p.image)}', currency: '${esc(p.currency)}'})" ${inStock?'':'disabled'}>
+              ${inStock?'Add to Cart':'Sold Out'}
             </button>
           </div>
         </div>
@@ -699,8 +785,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="modal-footer">
           <div class="modal-price">${sym}${price}</div>
-          <button class="modal-buy-btn" onclick="doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
-            ${inStock?'🛒 Buy Now':'Sold Out'}
+          <button class="modal-buy-btn" onclick="addToCart({priceId: '${esc(p.priceId)}', name: '${esc(p.name)}', price: ${p.price}, image: '${esc(p.image)}', currency: '${esc(p.currency)}'})" ${inStock?'':'disabled'}>
+            ${inStock?'🛒 Add to Cart':'Sold Out'}
           </button>
         </div>
       </div>`;
@@ -727,6 +813,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   const params=new URLSearchParams(location.search);
   if(params.get('success')==='true'){showToast('🎉 Order placed! Thanks so much!');history.replaceState({},'',location.pathname);}
   else if(params.get('canceled')==='true'){showToast('👋 Checkout canceled — come back any time!');history.replaceState({},'',location.pathname);}
+</script>
+<script src="cart.js"></script>
 </script>
 </body>
 </html>
