@@ -573,26 +573,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   async function loadProducts() {
   try {
-    // 1. Fetch from your NEW Supabase URL
     const res = await fetch(`${BACKEND_URL}/api/products`);
     if (!res.ok) throw new Error(`Server responded with ${res.status}`);
     
     const data = await res.json();
     
-    // 2. Translate the Stripe data for your website
+    // This maps Stripe's data format to your website's format
     allProducts = data.map(p => ({
       ...p,
       priceId: p.default_price?.id || '',
       price: p.default_price?.unit_amount || 0,
       currency: p.default_price?.currency || 'aud',
-      // This line grabs the FIRST image from the Stripe images list
-      image: p.images && p.images.length > 0 ? p.images[0] : '' 
+      image: p.images && p.images.length > 0 ? p.images[0] : ''
     }));
 
     updateSeoFromProducts(allProducts);
     renderProducts();
   } catch(err) { 
     showError(err.message); 
+    console.error("Load Error:", err);
   }
 }
 
