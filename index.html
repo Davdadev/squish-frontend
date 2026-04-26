@@ -135,8 +135,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .faq-a{font-size:.92rem;color:#444;font-weight:600;line-height:1.55}
     .contact-list{display:grid;gap:.5rem}
     .contact-link{color:var(--orange);font-weight:800;text-decoration:underline;text-underline-offset:2px}
-
-    /* SEO Section */
     .seo-section{position:relative;z-index:5;background:var(--purple);border-top:3px solid var(--dark);border-bottom:3px solid var(--dark);margin-top:3rem}
     .seo-inner{max-width:1280px;margin:0 auto;padding:2.5rem 1.5rem}
     .seo-grid{display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
@@ -146,7 +144,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .seo-card p strong{color:var(--dark)}
     .kw-cloud{display:flex;flex-wrap:wrap;gap:.45rem}
     .kw-pill{font-family:'Fredoka One',cursive;font-size:.78rem;padding:.25rem .7rem;border-radius:100px;border:2px solid var(--dark);display:inline-block}
-
     .site-footer{position:relative;z-index:5;background:var(--dark);color:var(--blue);border-top:3px solid var(--yellow);margin-top:0}
     .footer-inner{max-width:1280px;margin:0 auto;padding:2rem 1.2rem 1.4rem}
     .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.5rem;align-items:start}
@@ -160,7 +157,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .footer-copy{font-family:'Fredoka One',cursive;font-size:.86rem;letter-spacing:.4px}
     .footer-copy span{color:var(--pink)}
     .footer-note{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.8)}
-
     @media(max-width:600px){
       .hero h1{font-size:2.5rem}
       .products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem}
@@ -222,47 +218,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   border-bottom: 3px #1A1A2E solid;
   box-sizing: border-box;
 }
-.header-bar {
-  width: 100%;
-  min-height: 38px;
-  background: #FF4D8D;
-  border-bottom: 2px #1A1A2E solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 2;
-  padding: 0.25rem 0.5rem;
-  box-shadow: 0 2px 8px 0 rgba(26,26,46,0.07);
-}
-.header-bar span {
-  color: #fff;
-  font-size: 1.05rem;
-  font-family: 'Fredoka One', cursive;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-align: center;
-  white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(26,26,46,0.13);
-}
-@media (max-width: 6000px) {
-  .header-bar {
-    min-height: 28px;
-    padding: 0.1rem 0.2rem;
-  }
-  .header-bar span {
-    font-size: 0.78rem;
-    letter-spacing: 1px;
-  }
-}
-.header-bar span {
-  color: #fff;
-  font-size: 0.85rem;
-  font-family: 'Fredoka One', cursive;
-  font-weight: 400;
-  letter-spacing: 2px;
-  text-align: center;
-}
 .header-content {
   display: flex;
   align-items: center;
@@ -276,7 +231,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   align-items: center;
   gap: 18px;
 }
-
 .header-logo-texts {
   display: flex;
   flex-direction: column;
@@ -320,39 +274,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 }
-.header-nav a:last-child {
-  width: 110px;
-  color: #C9C4BE;
-}
-.header-nav a:hover {
-  background: #FF4D8D;
-  color: #fff;
-}
-.header-blobs {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-.header-blob {
-  position: absolute;
-  opacity: 0.15;
-  border-radius: 50%;
-}
-.header-blob-1 {
-  width: 200px; height: 200px; left: -40px; top: -60px; background: #FFD93D;
-}
-.header-blob-2 {
-  width: 140px; height: 140px; right: 192px; bottom: 0; background: #4ECDC4;
-}
-.header-blob-3 {
-  width: 80px; height: 80px; right: 16px; top: 67.59px; background: #fff;
-}
-  .header-title {
+.header-nav a:last-child { width: 110px; color: #C9C4BE; }
+.header-nav a:hover { background: #FF4D8D; color: #fff; }
+.header-blobs { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.header-blob { position: absolute; opacity: 0.15; border-radius: 50%; }
+.header-blob-1 { width: 200px; height: 200px; left: -40px; top: -60px; background: #FFD93D; }
+.header-blob-2 { width: 140px; height: 140px; right: 192px; bottom: 0; background: #4ECDC4; }
+.header-blob-3 { width: 80px; height: 80px; right: 16px; top: 67.59px; background: #fff; }
+.header-title {
   width: 100%;
-
-
-
   z-index: 3;
   text-align: center;
   color: #fff;
@@ -364,24 +294,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   text-shadow: 0px 8px 22px rgba(0,0,0,0.60), 0 3px 12px #1A1A2E;
   padding: 0 2rem;
 }
-@media (max-width: 900px) {
-  .header-title {
-    font-size: 4.5rem;
-    max-width: 99vw;
-    margin-top: 18px;
-    padding: 0 0.7rem;
-  }
-}
-@media (max-width: 600px) {
-  .header-title {
-    font-size: 2.5rem;
-    max-width: 99vw;
-    margin-top: 7px;
-    padding: 0 0.2rem;
-  }
-}
-
-/* Bolder, larger, more distinct header subtext */
 .header-subtext {
   width: 100%;
   max-width: 600px;
@@ -401,68 +313,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   padding: 0.5rem 1.2rem;
 }
 @media (max-width: 900px) {
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 24px 16px 0 16px;
-  }
-  .header-title {
-    font-size: 3rem;
-    margin-top: 24px;
-  }
-  .header-subtext {
-    font-size: 1rem;
-  }
+  .header-content { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 16px 0 16px; }
+  .header-title { font-size: 3rem; margin-top: 24px; }
+  .header-subtext { font-size: 1rem; }
 }
-
-
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 6px 0 6px;
-  }
-  .header-logo-title {
-    font-size: 1.3rem;
-  }
-  .header-logo-icon {
-    width: 36px; height: 36px; font-size: 1.2rem;
-  }
-  .header-subtext {
-    font-size: 1rem;
-    max-width: 99vw;
-    margin-top: 7px;
-    padding: 0.25rem 0.3rem;
-  }
-
-  .header-nav a {
-    width: 60px; height: 28px; font-size: 0.8rem;
-  }
-  .header-nav a:last-child {
-    width: 80px;
-  }
-  .header-title {
-    font-size: rem;
-    margin-top: 12px;
-  }
-  .header-subtext {
-    font-size: 2rem;
-  }
-  .header-blob-1 {
-    width: 100px; height: 100px; left: -20px; top: -30px;
-  }
-  .header-blob-2 {
-    width: 70px; height: 70px; right: 60px; bottom: 0;
-  }
-  .header-blob-3 {
-    width: 40px; height: 40px; right: 8px; top: 34px;
-  }
-
+@media (max-width: 600px) {
+  .header-title { font-size: 2.5rem; max-width: 99vw; margin-top: 7px; padding: 0 0.2rem; }
+  .header-subtext { font-size: 1rem; max-width: 99vw; margin-top: 7px; padding: 0.25rem 0.3rem; }
+  .header-nav a { width: 60px; height: 28px; font-size: 0.8rem; }
+  .header-nav a:last-child { width: 80px; }
+  .header-blob-1 { width: 100px; height: 100px; left: -20px; top: -30px; }
+  .header-blob-2 { width: 70px; height: 70px; right: 60px; bottom: 0; }
+  .header-blob-3 { width: 40px; height: 40px; right: 8px; top: 34px; }
+}
 </style>
-
-<!-- To use a background image, add data-bg="images/yourimage.jpg" to the section below -->
-
 
 <div class="ticker">
   <span class="ticker-inner">
@@ -503,21 +367,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="toast" id="toast"></div>
 
-<!-- ===================== SEO SECTION ===================== -->
 <section class="seo-section">
   <div class="seo-inner">
     <div class="seo-grid">
-
-      <!-- About blurb -->
       <div class="seo-card">
         <div class="seo-card-title">🖨️ Why 3Dfidgets.shop?</div>
         <p>Australia's home of <strong>3D printed fidget toys</strong> for kids and adults. Every toy is handcrafted with <strong>eco-friendly PLA plastic</strong> — durable, lightweight, and safe for all ages. Our sensory fidgets are loved by families managing <strong>ADHD, autism, anxiety,</strong> and sensory processing needs. Perfect as gifts, classroom tools, or occupational therapy aids. <strong>Free delivery on orders over $50</strong>, shipped Australia-wide to Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Darwin, and Canberra.</p>
       </div>
-
     </div>
   </div>
 </section>
-<!-- =================== END SEO SECTION =================== -->
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -526,9 +385,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="footer-brand">3Dfidgets.shop</div>
         <p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament. 🖨️</p>
       </div>
-
       <div>
-        
         <div class="footer-title">Quick Links</div>
         <div class="footer-links">
           <a class="footer-link" href="index.html">Shop</a>
@@ -537,7 +394,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a class="footer-link" href="returns.html">Returns</a>
         </div>
       </div>
-
       <div>
         <div class="footer-title">Support</div>
         <div class="footer-links">
@@ -546,15 +402,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <div class="payment-methods-bar" style="display:flex;gap:1.5rem;align-items:center;justify-content:center;margin:1.5rem 0 2rem 0;flex-wrap:wrap">
-          <img src="images/Visa.png" alt="Visa" title="Visa" width="70" height="48" loading="lazy"/>
-          <img src="images/PayPal.png" alt="PayPal" title="PayPal" width="70" height="48" loading="lazy"/>
-          <img src="images/Klarna.png" alt="Klarna" title="Klarna" width="70" height="48" loading="lazy"/>
-          <img src="images/Group1.png" alt="Group 1" title="JCB" width="70" height="48" loading="lazy"/>
-          <img src="images/Mastercard.png" alt="Mastercard" title="Mastercard" width="70" height="48" loading="lazy"/>
-          <img src="images/ApplePay.png" alt="Apple Pay" title="Apple Pay" width="70" height="48" loading="lazy"/>
-          <img src="images/GooglePay.png" alt="Google Pay" title="Google Pay" width="70" height="48" loading="lazy"/>
-        </div>
-
+      <img src="images/Visa.png" alt="Visa" title="Visa" width="70" height="48" loading="lazy"/>
+      <img src="images/PayPal.png" alt="PayPal" title="PayPal" width="70" height="48" loading="lazy"/>
+      <img src="images/Klarna.png" alt="Klarna" title="Klarna" width="70" height="48" loading="lazy"/>
+      <img src="images/Group1.png" alt="Group 1" title="JCB" width="70" height="48" loading="lazy"/>
+      <img src="images/Mastercard.png" alt="Mastercard" title="Mastercard" width="70" height="48" loading="lazy"/>
+      <img src="images/ApplePay.png" alt="Apple Pay" title="Apple Pay" width="70" height="48" loading="lazy"/>
+      <img src="images/GooglePay.png" alt="Google Pay" title="Google Pay" width="70" height="48" loading="lazy"/>
+    </div>
     <div class="footer-bottom">
       <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
       <div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div>
@@ -565,35 +420,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
   const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3RB3eRuP77suHqcWS5Px008gs0yJSL';
-  const BACKEND_URL = 'https://nkqqzklajidxqjbqyqlo.supabase.co/functions/v1/squish-backend';  const IS_PICKUP   = false;
+  const BACKEND_URL = 'https://nkqqzklajidxqjbqyqlo.supabase.co/functions/v1/squish-backend';
+  const IS_PICKUP   = false;
   const stripe = Stripe(STRIPE_PK);
   const EMOJIS = ['🦅','🌀','🎯','⭐','🧩','🎪','🎨','🎭','🎰','🎳'];
   const COLORS = ['#FFD93D','#4ECDC4','#FF4D8D','#A855F7','#6BCB77','#FF6B35','#60A5FA','#F472B6'];
   let allProducts = [], currentSort = 'default';
 
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // FIX: /api/products already returns { products: [...] } with priceId, price,
+  // currency and image pre-mapped by the backend. Do NOT re-map using
+  // default_price or images[] — those fields don't exist in the response.
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   async function loadProducts() {
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/products`);
-    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-    
-    const data = await res.json();
-    
-    // This maps Stripe's data format to your website's format
-    allProducts = data.map(p => ({
-      ...p,
-      priceId: p.default_price?.id || '',
-      price: p.default_price?.unit_amount || 0,
-      currency: p.default_price?.currency || 'aud',
-      image: p.images && p.images.length > 0 ? p.images[0] : ''
-    }));
-
-    updateSeoFromProducts(allProducts);
-    renderProducts();
-  } catch(err) { 
-    showError(err.message); 
-    console.error("Load Error:", err);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/products`);
+      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+      const data = await res.json();
+      // Backend returns { products: [...] } — each item already has
+      // priceId, price (cents), currency, image, name, description, active
+      allProducts = Array.isArray(data) ? data : (data.products || []);
+      updateSeoFromProducts(allProducts);
+      renderProducts();
+    } catch(err) {
+      showError(err.message);
+      console.error('Load Error:', err);
+    }
   }
-}
 
   function absUrl(url){
     try { return new URL(url, location.origin).toString(); }
@@ -670,7 +523,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="card-footer">
             <div class="card-price"><span class="currency">${sym}</span>${price}</div>
             <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
-              ${inStock?'Buy Now ':'Sold Out'}
+              ${inStock?'Buy Now':'Sold Out'}
             </button>
           </div>
         </div>
