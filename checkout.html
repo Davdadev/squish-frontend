@@ -838,11 +838,20 @@
       });
     }
 
+    // Read referral cookie
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return '';
+    }
+    const referral = getCookie('referral');
+
     try {
       const res = await fetch(`${BACKEND_URL}/api/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, pickup: isPickup })
+        body: JSON.stringify({ items, pickup: isPickup, referral })
       });
       if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.error||'Checkout failed'); }
       const { sessionId } = await res.json();
