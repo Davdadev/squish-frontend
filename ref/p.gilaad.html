@@ -1,0 +1,12 @@
+
+<script>
+(function() {
+  var path = window.location.pathname;
+  var match = path.match(/\/ref\/(\w+)/);
+  if (match && match[1]) {
+    document.cookie = 'referral=' + encodeURIComponent(match[1]) + '; path=/; max-age=2592000';
+  }
+  window.location.replace('/p.html');
+})();
+</script>
+ 
