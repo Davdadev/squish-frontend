@@ -436,10 +436,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     try {
       const res = await fetch(`${BACKEND_URL}/api/products`);
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-      const data = await res.json();
-      // Backend returns { products: [...] } — each item already has
-      // priceId, price (cents), currency, image, name, description, active
-      allProducts = Array.isArray(data) ? data : (data.products || []);
+      const raw = await res.json();
+      // Backend returns raw Stripe product objects (array).
+      // Map to the shape the rest of the page expects.
+      const arr = Array.isArray(raw) ? raw : (raw.products || raw.data || []);
+      allProducts = arr.map(p => ({
+        id:          p.id,
+        name:        p.name || '',
+        description: p.description || '',
+        active:      p.active !== false,
+        // default_price is expanded — it's an object, not just an ID
+        priceId:     p.default_price?.id   || p.priceId   || '',
+        price:       p.default_price?.unit_amount ?? p.price ?? 0,
+        currency:    p.default_price?.currency    || p.currency || 'aud',
+        // Stripe stores images in an array called `images`
+        image:       (p.images && p.images[0]) || p.image || null,
+        metadata:    p.metadata || {},
+      })).filter(p => p.priceId);
       updateSeoFromProducts(allProducts);
       renderProducts();
     } catch(err) {

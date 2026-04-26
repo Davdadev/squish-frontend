@@ -322,10 +322,20 @@
     try {
       const res = await fetch(`${BACKEND_URL}/api/products`);
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-      const data = await res.json();
-      // /api/products returns { products: [...] } — each item already has
-      // priceId, price (cents), currency, image, name, description, active
-      allProducts = Array.isArray(data) ? data : (data.products || []);
+      const raw = await res.json();
+      // Backend returns raw Stripe product objects (array).
+      const arr = Array.isArray(raw) ? raw : (raw.products || raw.data || []);
+      allProducts = arr.map(p => ({
+        id:          p.id,
+        name:        p.name || '',
+        description: p.description || '',
+        active:      p.active !== false,
+        priceId:     p.default_price?.id   || p.priceId   || '',
+        price:       p.default_price?.unit_amount ?? p.price ?? 0,
+        currency:    p.default_price?.currency    || p.currency || 'aud',
+        image:       (p.images && p.images[0]) || p.image || null,
+        metadata:    p.metadata || {},
+      })).filter(p => p.priceId);
 
       // Find the main product from the catalogue
       mainProduct = allProducts.find(p => p.priceId === mainPriceId);
@@ -506,11 +516,11 @@
     btn.innerHTML = '<span class="spinner"></span> Redirecting...';
     btn.disabled = true;
 
-    const items = [{ priceId: mainPriceId, quantity: 1, color: '' }];
+    const items = [{ price: mainPriceId, quantity: 1 }];
     for (const [pid, selection] of Object.entries(upsellSelections)) {
       const quantity = Number(selection?.quantity || 0);
       if (quantity <= 0) continue;
-      items.push({ priceId: pid, quantity, color: '' });
+      items.push({ price: pid, quantity });
     }
 
     function getCookie(name) {
