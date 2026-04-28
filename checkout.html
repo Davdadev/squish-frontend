@@ -299,8 +299,7 @@
 
   const params      = new URLSearchParams(location.search);
   const mainPriceId = params.get('priceId');
-  const isPickup    = false;
-  const showFreeShipping = !isPickup;
+  const isPickup = new URLSearchParams(location.search).get('pickup') === 'true';  const showFreeShipping = !isPickup;
 
   if (!mainPriceId) { location.href = 'index.html'; }
 
