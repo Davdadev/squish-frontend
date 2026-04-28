@@ -323,17 +323,17 @@
       const res = await fetch(`${BACKEND_URL}/api/products`);
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
       const raw = await res.json();
-      // Backend returns raw Stripe product objects (array).
+      // Backend returns { products: [...] }
       const arr = Array.isArray(raw) ? raw : (raw.products || raw.data || []);
       allProducts = arr.map(p => ({
         id:          p.id,
         name:        p.name || '',
         description: p.description || '',
         active:      p.active !== false,
-        priceId:     p.default_price?.id   || p.priceId   || '',
-        price:       p.default_price?.unit_amount ?? p.price ?? 0,
-        currency:    p.default_price?.currency    || p.currency || 'aud',
-        image:       (p.images && p.images[0]) || p.image || null,
+        priceId:     p.priceId || p.default_price?.id || '',
+        price:       p.price ?? p.default_price?.unit_amount ?? 0,
+        currency:    p.currency || p.default_price?.currency || 'aud',
+        image:       p.image || (p.images && p.images[0]) || null,
         metadata:    p.metadata || {},
       })).filter(p => p.priceId);
 
