@@ -1,4 +1,10 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
 User-agent: *
 Allow: /
 
-Sitemap: https://3dfidgets.shop/sitemap.xml
+Sitemap: https://3dfidgets.shop/sitemap.xmldd
