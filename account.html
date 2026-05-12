@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account | 3Dfidgets.shop — 3D Printed Fidget Toys Australia</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#fff9f0;--yellow:#D48867;--orange:#F18628;--pink:#FE6881;--blue:#D9C9B2;--purple:#6C9CCC;--green:#6BCB77;--dark:#1a1a2e;--card-bg:#fff;--shadow:4px 4px 0px var(--dark);--shadow-lg:6px 6px 0px var(--dark);--radius:20px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark)}
+    .custom-header{width:100%;position:relative;background:#FF6B35 url('Endless_Tools_2026-04-22_03-30-42.jpeg') center/cover no-repeat;overflow:hidden;border-bottom:3px #1A1A2E solid}
+    .header-content{display:flex;align-items:center;justify-content:space-between;padding:32px 32px 0;position:relative;z-index:3}
+    .header-logo{display:flex;align-items:center;gap:18px}
+    .header-logo-title{color:#fff;font-size:2.2rem;font-family:'Lilita One',cursive;line-height:1.1}
+    .header-logo-sub{color:#FFF9F0;font-size:.85rem;font-family:Nunito,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:2px}
+    .header-nav{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .header-nav a,.header-nav button{display:flex;align-items:center;justify-content:center;background:#1A1A2E;border-radius:100px;outline:2px #1A1A2E solid;outline-offset:-2px;color:#C7C2BC;font-size:.95rem;font-family:'Fredoka One',cursive;min-width:72px;height:32px;padding:0 .8rem;text-decoration:none;border:0;cursor:pointer}
+    .header-nav a:hover,.header-nav button:hover{background:var(--pink);color:#fff}
+    .header-nav .header-cart-btn{min-width:130px}
+    .header-nav .header-login-btn{min-width:84px}
+    .header-nav .user-btn{background:var(--green)!important;color:var(--dark)!important;min-width:150px}
+    .header-title{width:100%;z-index:3;text-align:center;color:#fff;font-size:clamp(2rem,6vw,3.5rem);font-family:'Lilita One',cursive;padding:0 2rem .9rem}
+    .ticker{background:#fff;color:var(--yellow);font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:1.2px;padding:.5rem 0;overflow:hidden;white-space:nowrap}
+
+    .hero{max-width:1180px;margin:1rem auto 0;background:var(--purple);border:3px solid var(--dark);border-radius:20px;box-shadow:var(--shadow-lg);padding:1.2rem 1.2rem;color:#fff}
+    .hero h1{font-family:'Lilita One',cursive;font-size:2.2rem}
+    .hero p{font-weight:700;opacity:.95}
+
+    .wrap{max-width:1180px;margin:0 auto;padding:1rem 1rem 2rem;display:grid;gap:1rem}
+    .card{background:#fff;border:3px solid var(--dark);border-radius:20px;box-shadow:var(--shadow);padding:1rem}
+    .title{font-family:'Lilita One',cursive;font-size:1.5rem;margin-bottom:.6rem}
+    .btn{display:inline-flex;align-items:center;justify-content:center;background:var(--orange);color:#fff;font-family:'Fredoka One',cursive;font-size:.9rem;padding:.45rem 1rem;border-radius:100px;text-decoration:none;border:2px solid var(--dark);box-shadow:3px 3px 0 var(--dark);cursor:pointer}
+    .btn-dark{background:var(--dark);color:var(--blue)}
+    .input{border:2.5px solid var(--dark);border-radius:12px;padding:.65rem .85rem;font-family:'Nunito',sans-serif;font-size:.95rem;width:100%}
+    .input:focus{outline:3px solid var(--orange);outline-offset:1px}
+
+    .order{border:2px solid var(--dark);border-radius:14px;padding:.8rem;margin:.55rem 0;background:#fff}
+    .order-head{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.4rem}
+    .status{border:2px solid var(--dark);border-radius:100px;padding:.2rem .6rem;font-family:'Fredoka One',cursive;font-size:.75rem}
+    .status.processing{background:var(--yellow)}
+    .status.shipped{background:var(--purple);color:#fff}
+    .status.delivered{background:var(--green)}
+
+    #cartOverlay{position:fixed;inset:0;z-index:190;display:none;opacity:0;transition:opacity .2s}
+    #cartDrawer{position:fixed;right:0;top:0;height:100vh;width:420px;max-width:100%;transform:translateX(110%);transition:transform .28s cubic-bezier(.2,.9,.2,1);z-index:195;background:#fff;border-left:3px solid var(--dark);box-shadow:-6px 0 0 var(--dark);padding:1.2rem;overflow:auto}
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark);color:var(--yellow);font-family:'Fredoka One',cursive;font-size:1rem;padding:.8rem 1.8rem;border-radius:100px;border:2.5px solid var(--yellow);box-shadow:4px 4px 0 var(--yellow);z-index:1000;transition:transform .3s;pointer-events:none}.toast.show{transform:translateX(-50%) translateY(0)}
+
+    .site-footer{background:var(--dark);color:var(--blue);border-top:3px solid var(--yellow)}
+    .footer-inner{max-width:1280px;margin:0 auto;padding:2rem 1.2rem 1.4rem}
+    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.5rem;align-items:start}
+    .footer-brand{font-family:'Lilita One',cursive;font-size:1.6rem;color:#fff}
+    .footer-tagline{margin-top:.4rem;font-size:.9rem;font-weight:700;color:rgba(255,255,255,.88)}
+    .footer-title{font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:.6px;text-transform:uppercase;margin-bottom:.55rem;color:var(--pink)}
+    .footer-links{display:grid;gap:.4rem}.footer-link{color:var(--yellow);font-weight:700;text-decoration:none}
+    .footer-bottom{margin-top:1.4rem;padding-top:1rem;border-top:2px dashed rgba(255,217,61,.4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
+
+    #userWrap{position:relative;display:none}
+    #userMenu{position:absolute;right:0;top:36px;background:#fff;border:2px solid var(--dark);border-radius:12px;box-shadow:4px 4px 0 var(--dark);padding:.35rem;display:none;min-width:150px}
+    #userMenu a{display:block;padding:.4rem .55rem;border-radius:8px;font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--dark);text-decoration:none}
+
+    @media(max-width:900px){.header-content{flex-direction:column;align-items:flex-start;padding:20px 14px 0}.footer-top{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header class="custom-header">
+  <div class="header-content">
+    <div class="header-logo">
+      <span style="font-size:1.8rem">🎲</span>
+      <div><span class="header-logo-title">3Dfidgets.shop</span><span class="header-logo-sub">3d printed fidgets for all ages</span></div>
+    </div>
+    <nav class="header-nav">
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <button class="header-cart-btn">🛒 Cart (0)</button>
+      <button class="header-login-btn" id="loginBtn">Login</button>
+      <div id="userWrap">
+        <button class="user-btn" id="userBtn"><span id="userName">Hi</span></button>
+        <div id="userMenu"><a href="account.html">My Account</a><a href="#" id="logoutBtn">Log Out</a></div>
+      </div>
+    </nav>
+  </div>
+  <div class="header-title">My Account</div>
+</header>
+
+<div class="ticker"><span class="ticker-inner">🚚 FREE DELIVERY OVER $50 • 🖨️ 3D PRINTED WITH LOVE • 🧠 ADHD & AUTISM FRIENDLY • ✨ AUSTRALIA WIDE</span></div>
+
+<section class="hero"><h1>My Account</h1><p>Manage your details and view your order history.</p></section>
+
+<main class="wrap">
+  <div id="notLogged" class="card" style="display:none">
+    <h2 class="title">You are not logged in</h2>
+    <p style="margin-bottom:.8rem">Log in to view account details and order history.</p>
+    <button class="btn" id="openLoginBtn">Log In</button>
+  </div>
+
+  <div id="loggedContent" style="display:none;display:grid;gap:1rem">
+    <section class="card">
+      <h2 class="title">My Details</h2>
+      <div id="detailsView"></div>
+      <div id="detailsEdit" style="display:none">
+        <div style="display:grid;gap:.55rem;max-width:420px">
+          <input class="input" id="editName" type="text" placeholder="First name" />
+          <input class="input" id="editEmail" type="email" placeholder="Email" />
+          <div style="display:flex;gap:.5rem"><button class="btn" id="saveDetailsBtn">Save</button><button class="btn btn-dark" id="cancelDetailsBtn">Cancel</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="title">Order History</h2>
+      <div id="ordersWrap"></div>
+    </section>
+  </div>
+</main>
+
+<div id="cartOverlay"><div class="close-cart" style="position:absolute;inset:0"></div></div>
+<aside id="cartDrawer">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem">
+    <div style="font-family:'Lilita One',cursive;font-size:1.4rem">Your Cart 🛒</div>
+    <button class="close-cart" style="border:2.5px solid var(--dark);background:#fff;border-radius:100px;padding:.4rem .7rem">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer" style="margin-top:1rem;display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem"><div style="font-family:'Lilita One',cursive">Subtotal</div><div class="cart-subtotal" style="font-family:'Lilita One',cursive">A$0.00</div></div>
+    <div style="font-size:.85rem;color:#666;margin-bottom:.6rem">Shipping calculated at checkout</div>
+    <button class="cart-checkout-btn" style="width:100%;background:var(--orange);border:2.5px solid var(--dark);padding:.8rem;border-radius:100px;font-family:'Fredoka One',cursive;color:#fff;box-shadow:4px 4px 0 var(--dark)">Proceed to Checkout →</button>
+    <div style="text-align:center;margin-top:.6rem"><a href="index.html">Continue Shopping</a></div>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div><div class="footer-brand">3Dfidgets.shop</div><p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament. 🖨️</p></div>
+      <div><div class="footer-title">Quick Links</div><div class="footer-links"><a class="footer-link" href="index.html">Shop</a><a class="footer-link" href="about.html">About</a><a class="footer-link" href="faq.html">FAQ</a><a class="footer-link" href="returns.html">Returns</a></div></div>
+      <div><div class="footer-title">Support</div><div class="footer-links"><a class="footer-link" href="contact.html">Contact</a><a class="footer-link" href="checkout.html">Checkout</a></div></div>
+    </div>
+    <div class="footer-bottom"><div class="footer-copy">Made with <span style="color:var(--pink)">♥</span> &amp; filament · Payments secured by Stripe 🔒</div><div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div></div>
+  </div>
+</footer>
+
+<script src="/cart.js"></script>
+<script src="/site.js"></script>
+<script>
+  function fmt(cents){return 'A$'+(Number(cents||0)/100).toFixed(2)}
+
+  function renderAccount(){
+    const user = JSON.parse(localStorage.getItem('fidgets_current_user') || 'null');
+    const notLogged = document.getElementById('notLogged');
+    const logged = document.getElementById('loggedContent');
+
+    if (!user) {
+      notLogged.style.display = 'block';
+      logged.style.display = 'none';
+      return;
+    }
+
+    notLogged.style.display = 'none';
+    logged.style.display = 'grid';
+
+    const detailsView = document.getElementById('detailsView');
+    detailsView.innerHTML = `<p><strong>Name:</strong> ${user.firstName || '-'}</p><p><strong>Email:</strong> ${user.email || '-'}</p><button class="btn" id="editDetailsBtn" style="margin-top:.7rem">Edit</button>`;
+
+    document.getElementById('editDetailsBtn').addEventListener('click', function(){
+      document.getElementById('detailsEdit').style.display = 'block';
+      document.getElementById('editName').value = user.firstName || '';
+      document.getElementById('editEmail').value = user.email || '';
+    });
+
+    document.getElementById('cancelDetailsBtn').addEventListener('click', function(){
+      document.getElementById('detailsEdit').style.display = 'none';
+    });
+
+    document.getElementById('saveDetailsBtn').addEventListener('click', function(){
+      const name = document.getElementById('editName').value.trim();
+      const email = document.getElementById('editEmail').value.trim().toLowerCase();
+      if (!name || !email) return;
+
+      const users = JSON.parse(localStorage.getItem('fidgets_users') || '[]');
+      const idx = users.findIndex(u => u.id === user.id);
+      if (idx >= 0) {
+        users[idx].firstName = name;
+        users[idx].email = email;
+        localStorage.setItem('fidgets_users', JSON.stringify(users));
+      }
+      localStorage.setItem('fidgets_current_user', JSON.stringify({ ...user, firstName: name, email }));
+      document.getElementById('detailsEdit').style.display = 'none';
+      renderAccount();
+      if (window.fidgetsAuth) window.fidgetsAuth.renderHeaderUser();
+    });
+
+    const orders = JSON.parse(localStorage.getItem('fidgets_orders') || '[]');
+    const wrap = document.getElementById('ordersWrap');
+    if (!orders.length) {
+      wrap.innerHTML = `<p>No orders yet — go shop! 🛒 <a href="index.html">Shop now</a></p>`;
+      return;
+    }
+
+    wrap.innerHTML = orders.map(o => {
+      const cls = (o.status || 'Processing').toLowerCase();
+      const itemSummary = (o.items || []).map(i => `${i.name} x${i.quantity}`).join(', ');
+      return `<article class="order"><div class="order-head"><div><strong>${o.id || 'ORD'}</strong><div style="font-size:.85rem;color:#666">${new Date(o.date).toLocaleString()}</div></div><span class="status ${cls}">${o.status || 'Processing'}</span></div><div style="font-size:.9rem;margin:.35rem 0">${itemSummary}</div><div style="font-family:'Lilita One',cursive">${fmt(o.total)}</div></article>`;
+    }).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const openLoginBtn = document.getElementById('openLoginBtn');
+    openLoginBtn.addEventListener('click', function(){ if (window.fidgetsAuth) window.fidgetsAuth.openAuth('login'); });
+    renderAccount();
+  });
+</script>
+</body>
+</html>

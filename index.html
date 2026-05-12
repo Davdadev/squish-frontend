@@ -554,8 +554,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const sym=currSym((p.currency||'aud').toUpperCase());
       const inStock=p.active!==false;
       const img=p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" />`:`<div class="card-image-placeholder">${EMOJIS[i%EMOJIS.length]}</div>`;
-      // clicking card navigates to product page; quick view available via button
-      return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="location.href='p.html?id=${encodeURIComponent(p.id)}'">
+      return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="openModal(${i})">
         <div class="card-image-wrap" style="--accent:${COLORS[i%COLORS.length]}">${img}
         </div>
         <div class="card-body">
@@ -563,12 +562,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="card-desc">${esc(p.description||'A beautifully crafted 3D printed fidget toy.')}</div>
           <div class="card-footer">
             <div class="card-price"><span class="currency">${sym}</span>${price}</div>
-            <div style="display:flex;gap:.5rem">
-              <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
-                ${inStock?'Buy Now':'Sold Out'}
-              </button>
-              <button class="filter-btn" onclick="event.stopPropagation();openModal(${i})">Quick View</button>
-            </div>
+            <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
+              ${inStock?'Buy Now':'Sold Out'}
+            </button>
           </div>
         </div>
       </div>`;
