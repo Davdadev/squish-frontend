@@ -198,6 +198,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="about.html">About</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
+      <button class="nav-link header-cart-btn" type="button">🛒 Cart (0)</button>
+      <button class="nav-link header-login-btn" type="button" id="loginBtn">Login</button>
     </nav>
   </div>
   <div class="header-blobs">
@@ -345,6 +347,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="images/GooglePay.png" alt="Google Pay" title="Google Pay" width="70" height="48" loading="lazy"/>
   </div>
   <div class="filter-bar">
+    <div style="flex:1 1 100%">
+      <input id="searchInput" placeholder="Search fidgets..." style="width:100%;padding:.6rem 1.4rem;border:2.5px solid var(--dark);border-radius:100px;font-family:Nunito, sans-serif;font-size:1rem" />
+    </div>
     <span class="filter-label">Sort:</span>
     <button class="filter-btn active" onclick="setSort(this,'default')">Featured</button>
     <button class="filter-btn" onclick="setSort(this,'price-asc')">Price ↑</button>
@@ -364,6 +369,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="modalContent"></div>
   </div>
 </div>
+
+<!-- CART DRAWER -->
+<div id="cartOverlay" style="position:fixed;inset:0;z-index:190;display:none;opacity:0;transition:opacity .2s">
+  <div onclick="cart.closeCart()" class="close-cart" style="position:absolute;inset:0"></div>
+</div>
+<aside id="cartDrawer" style="position:fixed;right:0;top:0;height:100vh;width:420px;max-width:100%;transform:translateX(110%);transition:transform .28s cubic-bezier(.2,.9,.2,1);z-index:195;background:#fff;border-left:3px solid var(--dark);box-shadow:-6px 0 0 var(--dark);padding:1.2rem;overflow:auto">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem">
+    <div style="font-family:'Lilita One',cursive;font-size:1.4rem">Your Cart 🛒</div>
+    <button class="close-cart" onclick="cart.closeCart()" style="border:2.5px solid var(--dark);background:#fff;border-radius:100px;padding:.4rem .7rem">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer" style="margin-top:1rem;display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+      <div style="font-family:'Lilita One',cursive">Subtotal</div>
+      <div class="cart-subtotal" style="font-family:'Lilita One',cursive">A$0.00</div>
+    </div>
+    <div style="font-size:.85rem;color:#666;margin-bottom:.6rem">Shipping calculated at checkout</div>
+    <div><button onclick="location.href='checkout.html'" style="width:100%;background:var(--orange);border:2.5px solid var(--dark);padding:.8rem;border-radius:100px;font-family:'Fredoka One',cursive;color:#fff;box-shadow:4px 4px 0 var(--dark)">Proceed to Checkout →</button></div>
+    <div style="text-align:center;margin-top:.6rem"><a href="index.html">Continue shopping</a></div>
+  </div>
+</aside>
 
 <div class="toast" id="toast"></div>
 
@@ -418,6 +444,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script src="https://js.stripe.com/v3/"></script>
+<script src="/cart.js"></script>
 <script>
   const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3RB3eRuP77suHqcWS5Px008gs0yJSL';
   const BACKEND_URL = 'https://nkqqzklajidxqjbqyqlo.supabase.co/functions/v1/squish-backend';
@@ -527,7 +554,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const sym=currSym((p.currency||'aud').toUpperCase());
       const inStock=p.active!==false;
       const img=p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" />`:`<div class="card-image-placeholder">${EMOJIS[i%EMOJIS.length]}</div>`;
-      return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="openModal(${i})">
+      // clicking card navigates to product page; quick view available via button
+      return `<div class="product-card" style="animation-delay:${(i*.07).toFixed(2)}s" onclick="location.href='p.html?id=${encodeURIComponent(p.id)}'">
         <div class="card-image-wrap" style="--accent:${COLORS[i%COLORS.length]}">${img}
         </div>
         <div class="card-body">
@@ -535,9 +563,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="card-desc">${esc(p.description||'A beautifully crafted 3D printed fidget toy.')}</div>
           <div class="card-footer">
             <div class="card-price"><span class="currency">${sym}</span>${price}</div>
-            <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
-              ${inStock?'Buy Now':'Sold Out'}
-            </button>
+            <div style="display:flex;gap:.5rem">
+              <button class="buy-btn" onclick="event.stopPropagation();doCheckout('${esc(p.priceId)}',this)" ${inStock?'':'disabled'}>
+                ${inStock?'Buy Now':'Sold Out'}
+              </button>
+              <button class="filter-btn" onclick="event.stopPropagation();openModal(${i})">Quick View</button>
+            </div>
           </div>
         </div>
       </div>`;
@@ -602,6 +633,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
   loadProducts();
+  // Search + filter bindings
+  const searchInput = document.getElementById('searchInput');
+  let currentSearch=''; let currentCategory='All';
+  if(searchInput){
+    searchInput.addEventListener('input', function(){ currentSearch = this.value.trim().toLowerCase(); applyFilters(); });
+  }
+  function applyFilters(){
+    let list = allProducts.slice();
+    if(currentSearch){ list = list.filter(p => (p.name||'').toLowerCase().includes(currentSearch) || (p.description||'').toLowerCase().includes(currentSearch)); }
+    // category filtering placeholder (categories read later)
+    // render into grid by temporarily overriding allProducts
+    const backup = allProducts; allProducts = list; renderProducts(); allProducts = backup;
+    const grid=document.getElementById('productsGrid');
+    if(list.length===0){ grid.innerHTML = `<div class="empty-state"><div class="big-emoji">🔎</div><h3>No results for '${escapeHtml(currentSearch)}'</h3><p>Try a different keyword or clear the filters.</p></div>` }
+  }
   const params=new URLSearchParams(location.search);
   if(params.get('success')==='true'){showToast('🎉 Order placed! Thanks so much!');history.replaceState({},'',location.pathname);}
   else if(params.get('canceled')==='true'){showToast('👋 Checkout canceled — come back any time!');history.replaceState({},'',location.pathname);}
