@@ -3,56 +3,121 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ | 3Dfidgets.shop — 3D Printed Fidget Toys Australia</title>
+  <title>FAQ · 3Dfidgets.shop</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+  <meta name="description" content="Frequently asked questions about 3Dfidgets.shop, including shipping times, materials, custom colors, and 3D printing details." />
+  <meta name="keywords" content="3D printed fidgets, FAQ, shipping, PLA, custom colors, Australia" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://3dfidgets.shop/faq.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FAQ · 3Dfidgets.shop" />
+  <meta property="og:description" content="Answers to common questions about shipping, materials, custom colors, and 3D printing." />
+  <meta property="og:url" content="https://3dfidgets.shop/faq.html" />
+  <meta property="og:site_name" content="3Dfidgets.shop" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FAQ · 3Dfidgets.shop" />
+  <meta name="twitter:description" content="Answers to common questions about shipping, materials, custom colors, and 3D printing." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
   <style>
-    :root{--bg:#fff9f0;--yellow:#D48867;--orange:#F18628;--pink:#FE6881;--blue:#D9C9B2;--purple:#6C9CCC;--green:#6BCB77;--dark:#1a1a2e;--card-bg:#fff;--shadow:4px 4px 0px var(--dark);--shadow-lg:6px 6px 0px var(--dark);--radius:20px}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0} body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark)}
-    .custom-header{width:100%;position:relative;background:#FF6B35 url('Endless_Tools_2026-04-22_03-30-42.jpeg') center/cover no-repeat;overflow:hidden;border-bottom:3px #1A1A2E solid}
-    .header-content{display:flex;align-items:center;justify-content:space-between;padding:32px 32px 0;z-index:3;position:relative}
-    .header-logo{display:flex;align-items:center;gap:18px}.header-logo-title{color:#fff;font-size:2.2rem;font-family:'Lilita One',cursive}.header-logo-sub{color:#FFF9F0;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:2px}
-    .header-nav{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.header-nav a,.header-nav button{display:flex;align-items:center;justify-content:center;background:#1A1A2E;border-radius:100px;outline:2px #1A1A2E solid;outline-offset:-2px;color:#C7C2BC;font-size:.95rem;font-family:'Fredoka One',cursive;min-width:72px;height:32px;padding:0 .8rem;text-decoration:none;border:0;cursor:pointer}.header-nav a:hover,.header-nav button:hover{background:var(--pink);color:#fff}
-    .header-nav .header-cart-btn{min-width:130px}.header-nav .header-login-btn{min-width:84px}.header-nav .user-btn{background:var(--green)!important;color:var(--dark)!important;min-width:150px}
-    .header-title{width:100%;text-align:center;color:#fff;font-size:clamp(2rem,6vw,3.4rem);font-family:'Lilita One',cursive;padding:0 2rem 1rem}
-    .ticker{background:#fff;color:var(--yellow);font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:1.2px;padding:.5rem 0;overflow:hidden;white-space:nowrap}
-
-    .hero{max-width:1180px;margin:1rem auto 0;background:var(--purple);color:#fff;border:3px solid var(--dark);border-radius:20px;box-shadow:var(--shadow-lg);padding:1.3rem}
-    .hero h1{font-family:'Lilita One',cursive;font-size:2.2rem}
-
-    .wrap{max-width:980px;margin:0 auto;padding:1rem 1rem 2rem;display:grid;gap:.75rem}
-    .faq-item{background:#fff;border:3px solid var(--dark);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
-    .faq-q{width:100%;text-align:left;border:0;background:transparent;padding:.9rem 1rem;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-    .faq-a{max-height:0;overflow:hidden;transition:max-height .28s ease;padding:0 1rem}
-    .faq-a p{padding:0 0 .95rem;color:#444;line-height:1.65;font-weight:700}
-    .faq-item.open .faq-a{max-height:180px}
-
-    #cartOverlay{position:fixed;inset:0;z-index:190;display:none;opacity:0;transition:opacity .2s}#cartDrawer{position:fixed;right:0;top:0;height:100vh;width:420px;max-width:100%;transform:translateX(110%);transition:transform .28s cubic-bezier(.2,.9,.2,1);z-index:195;background:#fff;border-left:3px solid var(--dark);box-shadow:-6px 0 0 var(--dark);padding:1.2rem;overflow:auto}
-    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark);color:var(--yellow);font-family:'Fredoka One',cursive;font-size:1rem;padding:.8rem 1.8rem;border-radius:100px;border:2.5px solid var(--yellow);box-shadow:4px 4px 0 var(--yellow);z-index:1000;transition:transform .3s;pointer-events:none}.toast.show{transform:translateX(-50%) translateY(0)}
-
-    .site-footer{background:var(--dark);color:var(--blue);border-top:3px solid var(--yellow)}.footer-inner{max-width:1280px;margin:0 auto;padding:2rem 1.2rem 1.4rem}.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.5rem;align-items:start}.footer-brand{font-family:'Lilita One',cursive;font-size:1.6rem;color:#fff}.footer-tagline{margin-top:.4rem;font-size:.9rem;font-weight:700;color:rgba(255,255,255,.88)}.footer-title{font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:.6px;text-transform:uppercase;margin-bottom:.55rem;color:var(--pink)}.footer-links{display:grid;gap:.4rem}.footer-link{color:var(--yellow);font-weight:700;text-decoration:none}.footer-bottom{margin-top:1.4rem;padding-top:1rem;border-top:2px dashed rgba(255,217,61,.4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
-    #userWrap{position:relative;display:none}#userMenu{position:absolute;right:0;top:36px;background:#fff;border:2px solid var(--dark);border-radius:12px;box-shadow:4px 4px 0 var(--dark);padding:.35rem;display:none;min-width:150px}#userMenu a{display:block;padding:.4rem .55rem;border-radius:8px;font-family:'Fredoka One',cursive;font-size:.85rem;color:var(--dark);text-decoration:none}
-    @media(max-width:900px){.header-content{flex-direction:column;align-items:flex-start;padding:20px 14px 0}.footer-top{grid-template-columns:1fr}}
+    :root{--bg: url('Endless_Tools_2026-04-22_03-30-42.jpeg') center/cover no-repeat;--yellow:#ffffff;--dark:#1a1a2e}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark)}
+    header{background:var(--yellow);border-bottom:3px solid var(--dark);padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+    .logo{font-family:'Lilita One',cursive;font-size:1.5rem;color:var(--dark);text-decoration:none}
+    .nav{display:flex;gap:.5rem;flex-wrap:wrap}
+    .nav a{font-family:'Fredoka One',cursive;font-size:.85rem;padding:.4rem .85rem;border-radius:999px;background:var(--dark);color:#D9C9B2;text-decoration:none;border:2px solid var(--dark)}
+    main{max-width:1200px;margin:0 auto;padding:2rem 1rem}
+    h1{font-family:'Lilita One',cursive;font-size:2rem;margin-bottom:1rem}
+    .faq{display:grid;gap:.7rem}
+    .item{background:#fff;border:3px solid var(--dark);border-radius:16px;padding:.8rem 1.1rem}
+    .item[open]{box-shadow:3px 3px 0 var(--dark)}
+    .q{font-family:'Fredoka One',cursive;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+    .q::-webkit-details-marker{display:none}
+    .q::after{content:'+';font-size:1.2rem;line-height:1;flex-shrink:0}
+    .item[open] .q::after{content:'−'}
+    .a{font-weight:600;color:#444;line-height:1.6;padding-top:.55rem}
+    .site-footer{position:relative;z-index:5;background:var(--dark);color:var(--yellow);border-top:3px solid var(--yellow);margin-top:2.5rem}
+    .footer-inner{max-width:1280px;margin:0 auto;padding:2rem 1.2rem 1.4rem}
+    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.5rem;align-items:start}
+    .footer-brand{font-family:'Lilita One',cursive;font-size:1.6rem;line-height:1;color:#cacaca}
+    .footer-tagline{margin-top:.4rem;font-size:.9rem;font-weight:700;color:rgba(255,255,255,.88);line-height:1.5}
+    .footer-title{font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:.6px;text-transform:uppercase;margin-bottom:.55rem;color:#FF4D8D}
+    .footer-links{display:grid;gap:.4rem}
+    .footer-link{color:#D48867;font-weight:700;text-decoration:none}
+    .footer-link:hover{text-decoration:underline;text-underline-offset:3px;color:#563737}
+    .footer-bottom{margin-top:1.4rem;padding-top:1rem;border-top:2px dashed rgba(255,217,61,.4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
+    .footer-copy{font-family:'Fredoka One',cursive;font-size:.86rem;letter-spacing:.4px}
+    .footer-copy span{color:#FF4D8D}
+    .footer-note{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.8)}
+    @media(max-width:600px){.footer-top{grid-template-columns:1fr}.footer-inner{padding:1.6rem 1rem 1.2rem}}
   </style>
 </head>
 <body>
-<header class="custom-header"><div class="header-content"><div class="header-logo"><span style="font-size:1.8rem">🎲</span><div><span class="header-logo-title">3Dfidgets.shop</span><span class="header-logo-sub">3d printed fidgets for all ages</span></div></div><nav class="header-nav"><a href="about.html">About</a><a href="faq.html" style="background:var(--orange);color:#fff">FAQ</a><a href="contact.html">Contact</a><button class="header-cart-btn">🛒 Cart (0)</button><button class="header-login-btn" id="loginBtn">Login</button><div id="userWrap"><button class="user-btn" id="userBtn"><span id="userName">Hi</span></button><div id="userMenu"><a href="account.html">My Account</a><a href="#" id="logoutBtn">Log Out</a></div></div></nav></div><div class="header-title">Frequently Asked Questions</div></header>
-<div class="ticker"><span class="ticker-inner">🚚 FREE DELIVERY OVER $50 • 🖨️ 3D PRINTED WITH LOVE • 🧠 ADHD & AUTISM FRIENDLY • ✨ AUSTRALIA WIDE</span></div>
+  <header>
+    <a class="logo" href="index.html">3Dfidgets.shop</a>
+    <nav class="nav">
+      <a href="index.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-<section class="hero"><h1>Got questions? We’ve got answers.</h1></section>
-<main class="wrap" id="faqWrap">
-  <article class="faq-item open"><button class="faq-q">How long does shipping take? <span>+</span></button><div class="faq-a"><p>Standard shipping takes 3-7 business days. Express shipping is 1-3 business days depending on your location.</p></div></article>
-  <article class="faq-item"><button class="faq-q">What material do you use? <span>+</span></button><div class="faq-a"><p>We print with premium eco-friendly PLA filament for strength, smooth feel, and vibrant color.</p></div></article>
-  <article class="faq-item"><button class="faq-q">Do you offer custom colors? <span>+</span></button><div class="faq-a"><p>Yes. Contact us with your preferred color combinations and we’ll confirm available options.</p></div></article>
-  <article class="faq-item"><button class="faq-q">Are fidgets suitable for kids? <span>+</span></button><div class="faq-a"><p>Most products are suitable for ages 6+. Supervision is recommended for younger children.</p></div></article>
-</main>
+  <main>
+    <h1>FAQ</h1>
+    <section class="faq">
+      <details class="item" id="faq-shipping">
+        <summary class="q">How long does shipping take?</summary>
+        <div class="a">Standard delivery is usually 3–7 business days. Express delivery is faster depending on location.</div>
+      </details>
+      <details class="item" id="faq-material">
+        <summary class="q">What material do you use?</summary>
+        <div class="a">Most fidgets are printed in eco-friendly PLA filament.</div>
+      </details>
+      <details class="item" id="faq-colors">
+        <summary class="q">Do you offer custom colors?</summary>
+        <div class="a">Yes, send us your preferred colors and we will confirm availability.</div>
+      </details>
+      <details class="item" id="faq-3d-printing">
+        <summary class="q">What is 3D printing?</summary>
+        <div class="a">3D printing is a process of creating three-dimensional objects by layering material based on a digital model.</div>
+      </details>
+    </section>
+  </main>
 
-<div id="cartOverlay"><div class="close-cart" style="position:absolute;inset:0"></div></div>
-<aside id="cartDrawer"><div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem"><div style="font-family:'Lilita One',cursive;font-size:1.4rem">Your Cart 🛒</div><button class="close-cart" style="border:2.5px solid var(--dark);background:#fff;border-radius:100px;padding:.4rem .7rem">✕</button></div><div class="cart-items"></div><div class="cart-footer" style="margin-top:1rem;display:none"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem"><div style="font-family:'Lilita One',cursive">Subtotal</div><div class="cart-subtotal" style="font-family:'Lilita One',cursive">A$0.00</div></div><div style="font-size:.85rem;color:#666;margin-bottom:.6rem">Shipping calculated at checkout</div><button class="cart-checkout-btn" style="width:100%;background:var(--orange);border:2.5px solid var(--dark);padding:.8rem;border-radius:100px;font-family:'Fredoka One',cursive;color:#fff;box-shadow:4px 4px 0 var(--dark)">Proceed to Checkout →</button><div style="text-align:center;margin-top:.6rem"><a href="index.html">Continue Shopping</a></div></div></aside>
-<div class="toast" id="toast"></div>
-<footer class="site-footer"><div class="footer-inner"><div class="footer-top"><div><div class="footer-brand">3Dfidgets.shop</div><p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament. 🖨️</p></div><div><div class="footer-title">Quick Links</div><div class="footer-links"><a class="footer-link" href="index.html">Shop</a><a class="footer-link" href="about.html">About</a><a class="footer-link" href="faq.html">FAQ</a><a class="footer-link" href="returns.html">Returns</a></div></div><div><div class="footer-title">Support</div><div class="footer-links"><a class="footer-link" href="contact.html">Contact</a><a class="footer-link" href="account.html">Account</a></div></div></div><div class="footer-bottom"><div class="footer-copy">Made with <span style="color:var(--pink)">♥</span> &amp; filament · Payments secured by Stripe 🔒</div><div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div></div></div></footer>
-<script src="/cart.js"></script><script src="/site.js"></script>
-<script>document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>{const item=q.closest('.faq-item');item.classList.toggle('open');}));</script>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">3Dfidgets.shop</div>
+          <p class="footer-tagline">Premium 3D printed fidgets made in Australia for play, focus, and everyday fun.</p>
+        </div>
+
+         <div>
+        <div class="footer-title">Quick Links</div>
+        <div class="footer-links">
+          <a class="footer-link" href="index.html">Shop</a>
+          <a class="footer-link" href="about.html">About</a>
+          <a class="footer-link" href="faq.html">FAQ</a>
+          <a class="footer-link" href="returns.html">Returns</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-title">Support</div>
+        <div class="footer-links">
+          <a class="footer-link" href="contact.html">Contact</a>
+
+        </div>
+      </div>
+    </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
+        <div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
