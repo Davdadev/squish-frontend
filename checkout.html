@@ -3,257 +3,382 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>You might also like — SQUISH FACTORY</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="shortcut icon" href="/favicon.svg">
+  <title>Cart &amp; Checkout · 3Dfidgets.shop</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
   <style>
-    :root {
-      --bg: #fff9f0;
-      --yellow: #D48867;
-      --orange: #FF6B35;
-      --pink: #FF4D8D;
-      --blue: #D9C9B2;
-      --purple: #A855F7;
-      --green: #6BCB77;
-      --dark: #1a1a2e;
-      --card-bg: #fff;
-      --shadow: 4px 4px 0px var(--dark);
-      --shadow-lg: 6px 6px 0px var(--dark);
-      --radius: 20px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--bg);
-      color: var(--dark);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(circle at 20% 30%, rgba(255,107,53,.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(217,201,178,.08) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    header {
-      position: relative;
-      z-index: 10;
-      background: var(--yellow) url('Endless_Tools_2026-04-22_03-30-42.jpeg') center/cover no-repeat;
-      border-bottom: 3px solid var(--dark);
-      padding: 1.2rem 2rem 1.2rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      min-height: 110px;
-      box-shadow: var(--shadow);
-    }
-    .logo-icon {
-      width: 48px; height: 48px;
-      background: var(--dark);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
-      animation: wiggle 3s ease-in-out infinite;
-      flex-shrink: 0;
-      color: var(--yellow);
-      box-shadow: 2px 2px 0 var(--yellow);
-    }
-    @keyframes wiggle { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
-    .logo-text {
-      font-family: 'Lilita One', cursive;
-      font-size: clamp(2.1rem, 4vw, 2.7rem);
-      color: #fff;
-      text-shadow: 0 2px 12px rgba(26,26,46,0.18);
-      letter-spacing: 1.5px;
-    }
-    main {
+    /* Checkout-specific layout */
+    .checkout-main {
+      max-width: 980px; margin: 0 auto;
+      padding: 2.5rem 1.2rem 3rem;
       position: relative; z-index: 5;
-      max-width: 860px; margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
     }
-    .cart-box {
+    .checkout-title {
+      font-family: 'Lilita One', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+    }
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+    }
+
+    .cart-section {
       background: var(--card-bg);
       border: 3px solid var(--dark);
       border-radius: var(--radius);
       box-shadow: var(--shadow-lg);
-      padding: 1.4rem 1.6rem;
-      margin-bottom: 2rem;
-      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+      padding: 1.3rem 1.4rem;
     }
-    .cart-img {
-      width: 64px; height: 64px;
-      border-radius: 12px; border: 2px solid var(--dark);
-      object-fit: cover; flex-shrink: 0;
+    .cart-section-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: .8rem; flex-wrap: wrap;
+      margin-bottom: 1rem;
+      padding-bottom: .8rem;
+      border-bottom: 2px dashed #e4e4e4;
+    }
+    .cart-section-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.25rem; color: var(--dark);
+    }
+    .cart-count-pill {
+      font-family: 'Fredoka One', cursive;
+      font-size: .82rem;
+      padding: .25rem .75rem;
+      background: var(--dark); color: var(--yellow);
+      border-radius: 100px;
+    }
+    .clear-cart-btn {
+      font-family: 'Nunito', sans-serif; font-size: .8rem; font-weight: 800;
+      background: none; border: none; color: #888; cursor: pointer;
+      text-decoration: underline; text-underline-offset: 2px;
+      padding: 0;
+    }
+    .clear-cart-btn:hover { color: var(--pink); }
+
+    .cart-line-row {
+      display: grid;
+      grid-template-columns: 84px 1fr auto;
+      gap: 1rem;
+      padding: .9rem 0;
+      border-bottom: 2px dashed #eee;
+      align-items: center;
+    }
+    .cart-line-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .cart-line-thumb {
+      width: 84px; height: 84px;
+      border-radius: 12px;
+      border: 2.5px solid var(--dark);
+      overflow: hidden;
       background: var(--yellow);
       display: flex; align-items: center; justify-content: center;
       font-size: 2rem;
       box-shadow: 2px 2px 0 var(--orange);
     }
-    .cart-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-    .cart-details { flex: 1; }
-    .cart-label { font-size: .75rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--pink); margin-bottom: .2rem; }
-    .cart-name { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: var(--dark); }
-    .cart-added-items { font-size: .85rem; font-weight: 600; color: var(--green); margin-top: .15rem; }
-    .cart-price { font-family: 'Lilita One', cursive; font-size: 1.8rem; color: var(--dark); flex-shrink: 0; }
-    .shipping-bar-wrap {
-      background: var(--card-bg); border: 3px solid var(--dark); border-radius: 16px;
-      box-shadow: var(--shadow); padding: 1.1rem 1.4rem; margin-bottom: 2rem;
+    .cart-line-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .cart-line-info { min-width: 0; }
+    .cart-line-info .name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.05rem; color: var(--dark);
+      line-height: 1.25; margin-bottom: .25rem;
     }
-    .shipping-bar-label {
-      font-family: 'Fredoka One', cursive; font-size: .95rem; color: var(--dark);
-      margin-bottom: .6rem; display: flex; justify-content: space-between; align-items: center;
+    .cart-line-info .unit-price {
+      font-size: .85rem; font-weight: 700; color: #777;
     }
-    .shipping-bar-label .goal { color: var(--green); font-size: 1rem; }
-    .bar-track { background: #f0f0f0; border: 2px solid var(--dark); border-radius: 100px; height: 16px; overflow: hidden; }
-    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); border-radius: 100px; transition: width .6s cubic-bezier(.34,1.56,.64,1); min-width: 4px; }
-    .shipping-unlocked { font-family: 'Fredoka One', cursive; font-size: .9rem; color: var(--green); margin-top: .5rem; text-align: center; }
-    .upsell-heading {
-      font-family: 'Lilita One', cursive; font-size: clamp(1.7rem, 3vw, 2.2rem); color: var(--orange);
-      margin-bottom: 1.5rem; display: flex; align-items: center; gap: .75rem;
+    .cart-line-info .controls {
+      display: flex; gap: .6rem; align-items: center;
+      margin-top: .55rem; flex-wrap: wrap;
     }
-    .upsell-heading::after { content: ''; flex: 1; height: 3px; background: repeating-linear-gradient(90deg, var(--dark) 0, var(--dark) 8px, transparent 8px, transparent 14px); }
-    .upsell-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1.4rem; margin-bottom: 2.5rem; }
-    .upsell-card {
-      background: var(--card-bg); border: 3px solid var(--dark); border-radius: var(--radius);
-      box-shadow: var(--shadow); overflow: hidden; transition: transform .2s, box-shadow .2s; position: relative;
+    .cart-line-info .remove {
+      font-family: 'Nunito', sans-serif; font-size: .78rem; font-weight: 800;
+      color: var(--pink); background: none; border: none;
+      cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+      padding: 0;
     }
-    .upsell-card.selected { border-color: var(--green); box-shadow: 4px 4px 0 var(--green); }
-    .upsell-card:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--dark); }
-    .upsell-card.selected:hover { box-shadow: 6px 6px 0 var(--green); }
-    .upsell-img {
-      height: 150px; display: flex; align-items: center; justify-content: center;
-      border-bottom: 3px solid var(--dark); font-size: 3.5rem; position: relative; overflow: hidden; background: var(--yellow);
+    .cart-line-info .remove:hover { color: var(--dark); }
+    .cart-line-total {
+      font-family: 'Lilita One', cursive;
+      font-size: 1.35rem; color: var(--dark);
+      align-self: center;
+      white-space: nowrap;
     }
-    .upsell-img img { width: 100%; height: 100%; object-fit: cover; }
-    .upsell-body { padding: 1rem; }
-    .upsell-name { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--dark); margin-bottom: .25rem; }
-    .upsell-price { font-family: 'Lilita One', cursive; font-size: 1.2rem; color: var(--dark); margin-bottom: .7rem; }
-    .add-btn {
-      width: 100%; font-family: 'Fredoka One', cursive; font-size: .95rem; padding: .5rem;
-      border: 2.5px solid var(--dark); border-radius: 100px; cursor: pointer; transition: all .15s; box-shadow: 2px 2px 0 var(--dark);
+
+    .cart-empty-box {
+      text-align: center; padding: 3rem 1rem;
     }
-    .add-btn.idle { background: #fff; color: var(--dark); }
-    .add-btn.idle:hover { background: var(--dark); color: var(--yellow); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--orange); }
-    .add-btn.added { background: var(--green); color: #fff; border-color: var(--green); }
-    .check-badge {
-      position: absolute; top: 8px; right: 8px;
-      width: 28px; height: 28px; background: var(--green); border: 2px solid var(--dark); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; font-size: .9rem;
-      opacity: 0; transform: scale(0); transition: all .2s cubic-bezier(.34,1.56,.64,1);
-      color: #fff; font-family: 'Lilita One', cursive;
+    .cart-empty-box .emoji {
+      font-size: 5rem; margin-bottom: 1rem; display: inline-block;
+      animation: float 3s ease-in-out infinite;
     }
-    .upsell-card.selected .check-badge { opacity: 1; transform: scale(1); }
-    .checkout-section { text-align: center; }
+    .cart-empty-box h3 {
+      font-family: 'Lilita One', cursive;
+      font-size: 1.7rem; margin-bottom: .4rem;
+    }
+    .cart-empty-box p { font-weight: 600; color: #666; margin-bottom: 1.4rem; }
+    .cart-empty-box .cta {
+      font-family: 'Fredoka One', cursive; font-size: 1rem;
+      padding: .7rem 1.8rem;
+      background: var(--orange); color: #fff;
+      border: 3px solid var(--dark); border-radius: 100px;
+      box-shadow: 4px 4px 0 var(--dark);
+      text-decoration: none; display: inline-block;
+      transition: all .15s;
+    }
+    .cart-empty-box .cta:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--dark); }
+
+    /* Summary card */
+    .summary-card {
+      background: var(--card-bg);
+      border: 3px solid var(--dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 1.3rem 1.4rem;
+      position: sticky; top: 1.2rem;
+    }
+    .summary-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.15rem; margin-bottom: 1rem;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: .55rem;
+      font-weight: 700; color: #444;
+    }
+    .summary-row.total {
+      font-family: 'Lilita One', cursive;
+      font-size: 1.4rem; color: var(--dark);
+      margin-top: .8rem;
+      padding-top: .8rem;
+      border-top: 2px dashed #ddd;
+    }
+    .summary-row.total .val { font-size: 1.7rem; }
+    .summary-row .label { display: flex; align-items: center; gap: .35rem; }
+    .summary-row .free { color: var(--green); font-weight: 800; }
+
+    .ship-bar {
+      background: var(--bg);
+      border: 2px solid var(--dark);
+      border-radius: 12px;
+      padding: .7rem .9rem;
+      margin-bottom: 1rem;
+    }
+    .ship-bar-label {
+      font-family: 'Fredoka One', cursive;
+      font-size: .85rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: .6rem;
+      margin-bottom: .4rem;
+    }
+    .ship-bar-label .goal { color: var(--green); font-size: .95rem; }
+    .bar-track {
+      background: #fff; border: 2px solid var(--dark);
+      border-radius: 100px; height: 12px; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      border-radius: 100px;
+      transition: width .6s cubic-bezier(.34,1.56,.64,1);
+      min-width: 4px;
+    }
+
     .checkout-btn {
-      font-family: 'Lilita One', cursive; font-size: 1.4rem; padding: 1rem 3rem;
-      background: var(--orange); color: #fff; border: 3px solid var(--dark); border-radius: 100px;
-      box-shadow: 5px 5px 0 var(--dark); cursor: pointer; transition: all .2s;
-      display: inline-flex; align-items: center; gap: .6rem; letter-spacing: .5px;
+      width: 100%;
+      font-family: 'Lilita One', cursive;
+      font-size: 1.2rem; padding: .9rem 1.5rem;
+      background: var(--orange); color: #fff;
+      border: 3px solid var(--dark); border-radius: 100px;
+      box-shadow: 5px 5px 0 var(--dark);
+      cursor: pointer; transition: all .15s;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .5rem; letter-spacing: .4px;
+      margin-top: 1rem;
     }
-    .checkout-btn:hover:not(:disabled) { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--dark); }
-    .checkout-btn:active:not(:disabled) { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--dark); }
-    .checkout-btn:disabled { background: #ccc; cursor: not-allowed; color: #999; }
+    .checkout-btn:hover:not(:disabled) {
+      transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--dark);
+    }
+    .checkout-btn:active:not(:disabled) {
+      transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--dark);
+    }
+    .checkout-btn:disabled { background: #ccc; color: #888; cursor: not-allowed; box-shadow: 2px 2px 0 var(--dark); }
     .checkout-btn .spinner {
       display: inline-block; width: 18px; height: 18px;
-      border: 3px solid rgba(255,255,255,.4); border-top-color: #fff;
-      border-radius: 50%; animation: spin .7s linear infinite;
+      border: 3px solid rgba(255,255,255,.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .skip-link {
-      display: block; margin-top: 1rem; font-family: 'Fredoka One', cursive; font-size: .9rem;
-      color: var(--pink); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+
+    .secure-note {
+      text-align: center; margin-top: .8rem;
+      font-size: .78rem; font-weight: 700; color: #888;
     }
-    .skip-link:hover { color: var(--dark); }
-    .total-preview {
-      background: var(--dark); color: var(--yellow); font-family: 'Fredoka One', cursive;
-      font-size: 1rem; padding: .6rem 1.4rem; border-radius: 100px; border: 2.5px solid var(--dark);
-      display: inline-block; margin-bottom: 1.2rem; letter-spacing: .3px;
+    .secure-note strong { color: var(--dark); }
+
+    /* Upsells */
+    .upsell-block {
+      margin-top: 2rem;
     }
-    .loading-state { text-align: center; padding: 3rem; font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: #999; }
+    .upsell-head {
+      font-family: 'Lilita One', cursive;
+      font-size: clamp(1.3rem, 3vw, 1.7rem);
+      color: var(--orange);
+      display: flex; align-items: center; gap: .65rem;
+      margin-bottom: 1rem;
+    }
+    .upsell-head::after {
+      content: ''; flex: 1; height: 3px;
+      background: repeating-linear-gradient(90deg, var(--dark) 0, var(--dark) 8px, transparent 8px, transparent 14px);
+    }
+    .upsell-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .upsell-card {
+      background: #fff;
+      border: 3px solid var(--dark);
+      border-radius: 16px;
+      box-shadow: 3px 3px 0 var(--dark);
+      overflow: hidden;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .upsell-card:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--dark); }
+    .upsell-img {
+      height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      border-bottom: 3px solid var(--dark);
+      font-size: 3rem;
+      overflow: hidden; background: var(--yellow);
+    }
+    .upsell-img img { width: 100%; height: 100%; object-fit: cover; }
+    .upsell-body { padding: .8rem .9rem 1rem; }
+    .upsell-name {
+      font-family: 'Fredoka One', cursive; font-size: .95rem;
+      line-height: 1.2; margin-bottom: .2rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .upsell-price {
+      font-family: 'Lilita One', cursive; font-size: 1.1rem;
+      margin-bottom: .6rem;
+    }
+    .upsell-add {
+      width: 100%; font-family: 'Fredoka One', cursive; font-size: .85rem;
+      padding: .4rem;
+      background: var(--dark); color: var(--yellow);
+      border: 2px solid var(--dark); border-radius: 100px;
+      cursor: pointer; transition: all .15s;
+    }
+    .upsell-add:hover { background: var(--orange); color: #fff; }
+    .upsell-add.added { background: var(--green); color: #fff; border-color: var(--green); }
+
+    .loader-row {
+      grid-column: 1/-1; text-align: center; padding: 1.5rem;
+      font-family: 'Fredoka One', cursive; color: #999;
+    }
     .loader {
-      display: inline-block; width: 40px; height: 40px;
+      display: inline-block; width: 36px; height: 36px;
       border: 4px solid #eee; border-top-color: var(--orange);
-      border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 1rem;
+      border-radius: 50%; animation: spin .8s linear infinite;
+      margin-bottom: .6rem;
     }
-    .qty-row {
-      display: flex; align-items: center; justify-content: center; gap: .5rem;
-      background: #f8f8f8; border: 2.5px solid var(--dark); border-radius: 100px;
-      padding: .3rem .5rem; box-shadow: 2px 2px 0 var(--dark);
-    }
-    .qty-btn {
-      width: 28px; height: 28px; background: var(--dark); color: var(--yellow);
-      border: none; border-radius: 50%; font-family: 'Fredoka One', cursive; font-size: 1.1rem;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: all .15s; flex-shrink: 0; line-height: 1;
-    }
-    .qty-btn:hover { background: var(--orange); transform: scale(1.1); }
-    .qty-num { font-family: 'Lilita One', cursive; font-size: 1.1rem; color: var(--dark); min-width: 20px; text-align: center; }
-    .site-footer { position: relative; z-index: 5; background: var(--dark); color: var(--yellow); border-top: 3px solid var(--yellow); margin-top: 2.5rem; }
-    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 2rem 1.2rem 1.4rem; }
-    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 1.5rem; align-items: start; }
-    .footer-brand { font-family: 'Lilita One', cursive; font-size: 1.6rem; line-height: 1; color: #fff; }
-    .footer-tagline { margin-top: .4rem; font-size: .9rem; font-weight: 700; color: rgba(255,255,255,.88); line-height: 1.5; }
-    .footer-title { font-family: 'Fredoka One', cursive; font-size: .9rem; letter-spacing: .6px; text-transform: uppercase; margin-bottom: .55rem; color: var(--pink); }
-    .footer-links { display: grid; gap: .4rem; }
-    .footer-link { color: var(--yellow); font-weight: 700; text-decoration: none; }
-    .footer-link:hover { text-decoration: underline; text-underline-offset: 3px; color: #fff; }
-    .footer-bottom { margin-top: 1.4rem; padding-top: 1rem; border-top: 2px dashed rgba(255,217,61,.4); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; }
-    .footer-copy { font-family: 'Fredoka One', cursive; font-size: .86rem; letter-spacing: .4px; }
-    .footer-copy span { color: var(--pink); }
-    .footer-note { font-size: .82rem; font-weight: 700; color: rgba(255,255,255,.8); }
+
     @media (max-width: 600px) {
-      main { padding: 1.5rem 1rem; }
-      header { padding: .8rem 1rem; }
-      .checkout-btn { font-size: 1.1rem; padding: .8rem 2rem; }
-      .footer-top { grid-template-columns: 1fr; }
-      .footer-inner { padding: 1.6rem 1rem 1.2rem; }
+      .cart-line-row { grid-template-columns: 64px 1fr; }
+      .cart-line-thumb { width: 64px; height: 64px; }
+      .cart-line-total { grid-column: 1 / -1; text-align: right; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo-icon">🦅</div>
-  <div class="logo-text">SQUISH FACTORY</div>
+<header class="site-header compact">
+  <div class="site-header-inner">
+    <a class="site-header-logo" href="index.html">
+      <span class="site-header-logo-icon" aria-hidden="true">🎲</span>
+      <span class="site-header-logo-texts">
+        <span class="site-header-logo-title">3Dfidgets.shop</span>
+        <span class="site-header-logo-sub">3D printed fidgets for all ages</span>
+      </span>
+    </a>
+    <nav class="site-header-nav">
+      <a href="index.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+  <div class="site-header-blobs" aria-hidden="true">
+    <div class="site-header-blob site-header-blob-1"></div>
+    <div class="site-header-blob site-header-blob-2"></div>
+    <div class="site-header-blob site-header-blob-3"></div>
+  </div>
 </header>
 
-<main>
-  <div class="cart-box" id="cartBox">
-    <div class="cart-img" id="cartImg">⏳</div>
-    <div class="cart-details">
-      <div class="cart-label">In your cart</div>
-      <div class="cart-name" id="cartName">Loading...</div>
-      <div class="cart-added-items" id="cartAddedItems"></div>
-    </div>
-    <div class="cart-price" id="cartPrice">—</div>
-  </div>
+<main class="checkout-main">
+  <h1 class="checkout-title">🛒 Your Cart <span id="cartHeaderPill" class="cart-count-pill" style="display:none">0 items</span></h1>
 
-  <div class="shipping-bar-wrap" id="shippingBarWrap">
-    <div class="shipping-bar-label">
-      <span id="shippingBarText">🚚 Add more to unlock free shipping!</span>
-      <span class="goal">$50 free shipping</span>
-    </div>
-    <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
-    <div class="shipping-unlocked" id="shippingUnlocked" style="display:none">🎉 You've unlocked FREE standard shipping!</div>
-  </div>
+  <div class="checkout-grid">
+    <div>
+      <section class="cart-section" id="cartSection">
+        <div class="cart-section-head">
+          <div class="cart-section-title">Items</div>
+          <button class="clear-cart-btn" id="clearCartBtn" style="display:none">Clear cart</button>
+        </div>
+        <div id="cartLines"></div>
+      </section>
 
-  <div class="upsell-heading">✨ You might also like</div>
-  <div class="upsell-grid" id="upsellGrid">
-    <div class="loading-state" style="grid-column:1/-1">
-      <div class="loader"></div><br>Loading recommendations...
+      <div class="upsell-block" id="upsellBlock" style="display:none">
+        <div class="upsell-head">✨ You might also like</div>
+        <div class="upsell-grid" id="upsellGrid">
+          <div class="loader-row"><div class="loader"></div><br>Loading recommendations...</div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="checkout-section">
-    <div class="total-preview" id="totalPreview">Total: —</div><br>
-    <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()">
-      🛒 Continue to Checkout
-    </button>
-    <div class="skip-link" onclick="skipUpsell()">No thanks, just my original item</div>
+    <aside>
+      <div class="summary-card" id="summaryCard">
+        <div class="summary-title">Order summary</div>
+
+        <div class="ship-bar" id="shipBar">
+          <div class="ship-bar-label">
+            <span id="shipBarText">🚚 Add more to unlock free shipping!</span>
+            <span class="goal">$50</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">Subtotal</span>
+          <span class="val" id="sumSubtotal">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Shipping</span>
+          <span class="val" id="sumShipping">—</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label">Total</span>
+          <span class="val" id="sumTotal">—</span>
+        </div>
+
+        <button class="checkout-btn" id="checkoutBtn">
+          🔒 Continue to Checkout
+        </button>
+        <div class="secure-note">Payments secured by <strong>Stripe</strong> · You'll be redirected to a secure page.</div>
+      </div>
+    </aside>
   </div>
 </main>
 
@@ -262,7 +387,7 @@
     <div class="footer-top">
       <div>
         <div class="footer-brand">3Dfidgets.shop</div>
-        <p class="footer-tagline">Premium 3D printed fidgets made in Australia for play, focus, and everyday fun.</p>
+        <p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament. 🖨️</p>
       </div>
       <div>
         <div class="footer-title">Quick Links</div>
@@ -277,8 +402,17 @@
         <div class="footer-title">Support</div>
         <div class="footer-links">
           <a class="footer-link" href="contact.html">Contact</a>
+          <a class="footer-link" href="checkout.html">Cart &amp; Checkout</a>
         </div>
       </div>
+    </div>
+    <div class="payment-methods-bar">
+      <img src="images/Visa.png" alt="Visa" width="60" height="40" loading="lazy"/>
+      <img src="images/PayPal.png" alt="PayPal" width="60" height="40" loading="lazy"/>
+      <img src="images/Klarna.png" alt="Klarna" width="60" height="40" loading="lazy"/>
+      <img src="images/Mastercard.png" alt="Mastercard" width="60" height="40" loading="lazy"/>
+      <img src="images/ApplePay.png" alt="Apple Pay" width="60" height="40" loading="lazy"/>
+      <img src="images/GooglePay.png" alt="Google Pay" width="60" height="40" loading="lazy"/>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
@@ -288,41 +422,62 @@
 </footer>
 
 <script src="https://js.stripe.com/v3/"></script>
+<script src="cart.js" defer></script>
 <script>
-  const STRIPE_PK   = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3RB3eRuP77suHqcWS5Px008gs0yJSL';
+  const STRIPE_PK = 'pk_live_51S4c3LCnw8RT6JxavXnFgIoo5p3hYog6SPLx5F1gzRmOTaWWet2opl0wOkvpHKXU6xfo3RB3eRuP77suHqcWS5Px008gs0yJSL';
   const BACKEND_URL = 'https://nkqqzklajidxqjbqyqlo.supabase.co/functions/v1/squish-backend';
-  const FREE_SHIPPING_THRESHOLD = 5000; // $50 in cents
+  const FREE_SHIPPING_THRESHOLD = 5000;
+  const STANDARD_SHIPPING = 1000; // $10 default if not over threshold
 
   const stripe = Stripe(STRIPE_PK);
   const EMOJIS = ['🦅','🌀','🎯','⭐','🧩','🎪','🎨','🎭','🎰','🎳'];
   const COLORS = ['#FFD93D','#4ECDC4','#FF4D8D','#A855F7','#6BCB77','#FF6B35','#60A5FA','#F472B6'];
 
-  const params      = new URLSearchParams(location.search);
-  const mainPriceId = params.get('priceId');
-  const isPickup = new URLSearchParams(location.search).get('pickup') === 'true';  const showFreeShipping = !isPickup;
+  let allProducts = [];
+  let recsRendered = false;
 
-  if (!mainPriceId) { location.href = 'index.html'; }
-
-  let allProducts      = [];
-  let mainProduct      = null;
-  let upsellSelections = {};
-
-  function currSym(c){return{AUD:'A$',USD:'$',GBP:'£',EUR:'€',NZD:'NZ$',CAD:'C$'}[c]||c+' ';}
   function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function fmt(cents,currency){return currSym((currency||'aud').toUpperCase())+(cents/100).toFixed(2);}
+  function currSym(c){return{AUD:'A$',USD:'$',GBP:'£',EUR:'€',NZD:'NZ$',CAD:'C$'}[c]||c+' ';}
+  function fmt(cents, currency) {
+    return currSym((currency||'aud').toUpperCase()) + ((Number(cents)||0)/100).toFixed(2);
+  }
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // FIX A: initialize() now loads products from /api/products (not /api/checkout).
-  //        The old version was firing a real checkout and redirecting immediately.
-  // FIX B: The call at the bottom was `init()` — function is named `initialize()`.
-  //        That typo meant nothing ran at all on page load.
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  async function initialize() {
+  // ── Backward compatibility ────────────────────────────────────────────────
+  // If user arrives via legacy URL `?priceId=...`, add that item to the cart
+  // then strip the param.
+  function migrateLegacyQuery() {
+    const params = new URLSearchParams(location.search);
+    const pid = params.get('priceId');
+    if (pid && window.Cart) {
+      const existing = window.Cart.getItems().find(x => x.priceId === pid);
+      if (!existing) {
+        // We may not have the product yet — stash and add once loaded.
+        sessionStorage.setItem('pendingLegacyPriceId', pid);
+      }
+      params.delete('priceId');
+      params.delete('pickup');
+      const q = params.toString();
+      history.replaceState({}, '', location.pathname + (q ? '?' + q : ''));
+    }
+  }
+
+  function applyPendingLegacy() {
+    const pid = sessionStorage.getItem('pendingLegacyPriceId');
+    if (!pid || !allProducts.length) return;
+    const p = allProducts.find(x => x.priceId === pid);
+    if (p) {
+      const has = window.Cart.getItems().find(x => x.priceId === pid);
+      if (!has) window.Cart.add(p, 1);
+    }
+    sessionStorage.removeItem('pendingLegacyPriceId');
+  }
+
+  // ── Load product catalogue (for upsells + image lookups) ─────────────────
+  async function loadProducts() {
     try {
       const res = await fetch(`${BACKEND_URL}/api/products`);
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
       const raw = await res.json();
-      // Backend returns { products: [...] }
       const arr = Array.isArray(raw) ? raw : (raw.products || raw.data || []);
       allProducts = arr.map(p => ({
         id:          p.id,
@@ -330,197 +485,179 @@
         description: p.description || '',
         active:      p.active !== false,
         priceId:     p.priceId || p.default_price?.id || '',
-        price:       p.price ?? p.default_price?.unit_amount ?? 0,
-        currency:    p.currency || p.default_price?.currency || 'aud',
-        image:       p.image || (p.images && p.images[0]) || null,
-        metadata:    p.metadata || {},
+        price:       Number(p.price ?? p.default_price?.unit_amount ?? 0),
+        currency:    String(p.currency || p.default_price?.currency || 'aud').toLowerCase(),
+        image:       p.image || (Array.isArray(p.images) && p.images[0]) || null,
       })).filter(p => p.priceId);
-
-      // Find the main product from the catalogue
-      mainProduct = allProducts.find(p => p.priceId === mainPriceId);
-      if (!mainProduct) {
-        // Fallback stub so the page still renders even if priceId isn't in catalogue
-        mainProduct = { priceId: mainPriceId, name: 'Your item', price: 0, currency: 'aud', image: null, active: true };
-      }
-
-      renderCartSummary();
+      applyPendingLegacy();
       renderUpsells();
-
-      if (showFreeShipping) {
-        updateShippingBar(mainProduct.price || 0);
-      } else {
-        document.getElementById('shippingBarWrap').style.display = 'none';
-      }
-
-      const sym = currSym((mainProduct.currency || 'aud').toUpperCase());
-      document.getElementById('totalPreview').textContent =
-        `Total: ${sym}${((mainProduct.price || 0) / 100).toFixed(2)}`;
     } catch (err) {
-      console.error('Init error:', err);
-      document.getElementById('upsellGrid').innerHTML =
-        `<p style="grid-column:1/-1;text-align:center;color:#999;font-family:'Fredoka One',cursive;padding:2rem">Could not load — ${err.message}</p>`;
+      console.error('Could not load product catalogue:', err);
+      const grid = document.getElementById('upsellGrid');
+      if (grid) grid.innerHTML = `<div class="loader-row">Couldn't load recommendations. <a href="index.html" style="color:var(--orange);font-weight:800">Browse the shop →</a></div>`;
     }
   }
 
-  // ── CART SUMMARY ─────────────────────────────────
-  function renderCartSummary() {
-    const imgEl = document.getElementById('cartImg');
-    if (mainProduct.image) {
-      imgEl.innerHTML = `<img src="${esc(mainProduct.image)}" alt="${esc(mainProduct.name)}" />`;
-    } else {
-      const idx = allProducts.indexOf(mainProduct);
-      imgEl.textContent = EMOJIS[idx % EMOJIS.length] || '🎲';
-      imgEl.style.background = COLORS[idx % COLORS.length] || '#FFD93D';
-    }
-    document.getElementById('cartName').textContent = mainProduct.name;
-    updateCartDisplay();
-  }
+  // ── Render cart line items ───────────────────────────────────────────────
+  function renderCart() {
+    const items = window.Cart.getItems();
+    const linesEl = document.getElementById('cartLines');
+    const pill = document.getElementById('cartHeaderPill');
+    const clearBtn = document.getElementById('clearCartBtn');
+    const upsellBlock = document.getElementById('upsellBlock');
 
-  function updateCartDisplay() {
-    const sym = currSym((mainProduct.currency||'aud').toUpperCase());
-    let upsellTotal = 0;
-    const addedLabels = [];
-    for (const [pid, selection] of Object.entries(upsellSelections)) {
-      const qty = Number(selection?.quantity || 0);
-      const p = allProducts.find(x => x.priceId === pid);
-      if (p && qty > 0) {
-        upsellTotal += (p.price||0) * qty;
-        addedLabels.push(qty > 1 ? `${p.name} x${qty}` : p.name);
-      }
-    }
-    const totalCents = Math.max(0, (mainProduct.price || 0)) + upsellTotal;
-
-    document.getElementById('cartPrice').textContent = sym + (totalCents/100).toFixed(2);
-
-    document.getElementById('cartAddedItems').textContent =
-      addedLabels.length ? '+ ' + addedLabels.join(', ') : '';
-
-    if (showFreeShipping) {
-      const toGo = Math.max(0, FREE_SHIPPING_THRESHOLD - totalCents);
-      document.getElementById('totalPreview').textContent =
-        `Total: ${sym}${(totalCents/100).toFixed(2)}` +
-        (toGo > 0 ? ` · Add ${sym}${(toGo/100).toFixed(2)} for free shipping` : ' · 🎉 Free shipping unlocked!');
-      updateShippingBar(totalCents);
-    } else {
-      document.getElementById('totalPreview').textContent = `Total: ${sym}${(totalCents/100).toFixed(2)}`;
-    }
-  }
-
-  // ── SHIPPING BAR ─────────────────────────────────
-  function updateShippingBar(totalCents) {
-    const total = totalCents || (mainProduct ? mainProduct.price || 0 : 0);
-    const pct   = Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100);
-    document.getElementById('barFill').style.width = pct + '%';
-
-    const sym  = currSym((mainProduct?.currency||'aud').toUpperCase());
-    const toGo = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
-
-    if (toGo <= 0) {
-      document.getElementById('shippingBarText').textContent = '🎉 Free shipping unlocked!';
-      document.getElementById('shippingUnlocked').style.display = 'block';
-    } else {
-      document.getElementById('shippingBarText').textContent =
-        `Add ${sym}${(toGo/100).toFixed(2)} more for FREE standard shipping!`;
-      document.getElementById('shippingUnlocked').style.display = 'none';
-    }
-  }
-
-  // ── UPSELL GRID ──────────────────────────────────
-  function renderUpsells() {
-    const recs = allProducts
-      .filter(p => p.priceId !== mainPriceId && p.active !== false)
-      .slice(0, 3);
-
-    const grid = document.getElementById('upsellGrid');
-
-    if (!recs.length) {
-      grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#999;font-family:'Fredoka One',cursive;padding:2rem">More products coming soon! 🖨️</p>`;
+    if (!items.length) {
+      linesEl.innerHTML = `
+        <div class="cart-empty-box">
+          <span class="emoji">🦅</span>
+          <h3>Your cart is empty</h3>
+          <p>Find some fidgets you love and add them here!</p>
+          <a class="cta" href="index.html">Browse fidgets</a>
+        </div>`;
+      pill.style.display = 'none';
+      clearBtn.style.display = 'none';
+      upsellBlock.style.display = 'none';
+      renderSummary();
       return;
     }
 
-    grid.innerHTML = recs.map((p, i) => {
-      const price = fmt(p.price||0, p.currency);
-      const emoji = EMOJIS[(allProducts.indexOf(p)) % EMOJIS.length];
-      const color = COLORS[(allProducts.indexOf(p)) % COLORS.length];
+    const totalUnits = items.reduce((n, x) => n + x.quantity, 0);
+    pill.textContent = `${totalUnits} item${totalUnits === 1 ? '' : 's'}`;
+    pill.style.display = 'inline-block';
+    clearBtn.style.display = 'inline-block';
+    upsellBlock.style.display = 'block';
+    if (!recsRendered) renderUpsells();
+
+    linesEl.innerHTML = items.map((x, i) => {
+      const imgHtml = x.image
+        ? `<img src="${esc(x.image)}" alt="${esc(x.name)}" />`
+        : `<span>${EMOJIS[i % EMOJIS.length]}</span>`;
+      const lineTotal = x.price * x.quantity;
+      return `
+        <div class="cart-line-row" data-pid="${esc(x.priceId)}">
+          <div class="cart-line-thumb" style="background:${COLORS[i%COLORS.length]}">${imgHtml}</div>
+          <div class="cart-line-info">
+            <div class="name">${esc(x.name)}</div>
+            <div class="unit-price">${fmt(x.price, x.currency)} each</div>
+            <div class="controls">
+              <div class="qty-stepper">
+                <button data-action="dec" aria-label="Decrease">−</button>
+                <span class="qty-num">${x.quantity}</span>
+                <button data-action="inc" aria-label="Increase" ${x.quantity >= 99 ? 'disabled' : ''}>+</button>
+              </div>
+              <button class="remove" data-action="remove">Remove</button>
+            </div>
+          </div>
+          <div class="cart-line-total">${fmt(lineTotal, x.currency)}</div>
+        </div>`;
+    }).join('');
+
+    // Wire up controls
+    linesEl.querySelectorAll('.cart-line-row').forEach((row) => {
+      const pid = row.dataset.pid;
+      row.addEventListener('click', (e) => {
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        if (!action) return;
+        const line = window.Cart.getItems().find(x => x.priceId === pid);
+        if (!line) return;
+        if (action === 'inc') window.Cart.setQty(pid, line.quantity + 1);
+        else if (action === 'dec') window.Cart.setQty(pid, line.quantity - 1);
+        else if (action === 'remove') window.Cart.remove(pid);
+      });
+    });
+
+    renderSummary();
+  }
+
+  function renderSummary() {
+    const items = window.Cart.getItems();
+    const cur = window.Cart.currency();
+    const subtotal = window.Cart.subtotal();
+    const isEmpty = !items.length;
+    const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+    const shipping = isEmpty ? 0 : (freeShipping ? 0 : STANDARD_SHIPPING);
+    const total = subtotal + shipping;
+
+    document.getElementById('sumSubtotal').textContent = fmt(subtotal, cur);
+    document.getElementById('sumShipping').innerHTML = isEmpty
+      ? '—'
+      : (freeShipping ? '<span class="free">FREE 🎉</span>' : fmt(shipping, cur));
+    document.getElementById('sumTotal').innerHTML = `<span class="val">${fmt(total, cur)}</span>`;
+
+    const toGo = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+    const pct = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+    document.getElementById('barFill').style.width = pct + '%';
+    document.getElementById('shipBarText').innerHTML = isEmpty
+      ? 'Add items to unlock free shipping'
+      : (toGo > 0
+        ? `Add <strong>${fmt(toGo, cur)}</strong> more for FREE shipping!`
+        : `🎉 Free shipping unlocked!`);
+
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = isEmpty;
+  }
+
+  // ── Render upsells ───────────────────────────────────────────────────────
+  function renderUpsells() {
+    const grid = document.getElementById('upsellGrid');
+    if (!grid) return;
+    if (!allProducts.length) return; // not loaded yet
+
+    const inCart = new Set(window.Cart.getItems().map(x => x.priceId));
+    const recs = allProducts
+      .filter(p => p.active !== false && !inCart.has(p.priceId))
+      .slice(0, 4);
+
+    if (!recs.length) {
+      grid.innerHTML = `<div class="loader-row">No more recommendations right now.</div>`;
+      recsRendered = true;
+      return;
+    }
+
+    grid.innerHTML = recs.map((p) => {
+      const idx = allProducts.indexOf(p);
       const imgHtml = p.image
         ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" />`
-        : `<span style="font-size:3.5rem">${emoji}</span>`;
-
+        : `<span>${EMOJIS[idx % EMOJIS.length]}</span>`;
       return `
-        <div class="upsell-card" id="ucard-${i}" onclick="toggleUpsell('${esc(p.priceId)}', ${i})">
-          <div class="upsell-img" style="background:${color}">${imgHtml}
-            <div class="check-badge" id="cbadge-${i}">1</div>
-          </div>
+        <div class="upsell-card" data-pid="${esc(p.priceId)}">
+          <div class="upsell-img" style="background:${COLORS[idx%COLORS.length]}">${imgHtml}</div>
           <div class="upsell-body">
             <div class="upsell-name">${esc(p.name)}</div>
-            <div class="upsell-price">${price}</div>
-            <div class="qty-row" id="qrow-${i}" style="display:none">
-              <button class="qty-btn" onclick="event.stopPropagation();changeQty('${esc(p.priceId)}',${i},-1)">−</button>
-              <span class="qty-num" id="qnum-${i}">1</span>
-              <button class="qty-btn" onclick="event.stopPropagation();changeQty('${esc(p.priceId)}',${i},1)">+</button>
-            </div>
-            <button class="add-btn idle" id="abtn-${i}" onclick="event.stopPropagation();addUpsell('${esc(p.priceId)}',${i})">+ Add to order</button>
+            <div class="upsell-price">${fmt(p.price, p.currency)}</div>
+            <button class="upsell-add" data-action="add">+ Add to cart</button>
           </div>
         </div>`;
     }).join('');
+
+    grid.querySelectorAll('.upsell-card').forEach((card) => {
+      const pid = card.dataset.pid;
+      card.querySelector('.upsell-add').addEventListener('click', () => {
+        const p = allProducts.find(x => x.priceId === pid);
+        if (!p) return;
+        window.Cart.add(p, 1);
+        const btn = card.querySelector('.upsell-add');
+        btn.classList.add('added');
+        btn.textContent = '✓ Added';
+        setTimeout(() => { renderUpsells(); }, 800);
+      });
+    });
+    recsRendered = true;
   }
 
-  function toggleUpsell(priceId, cardIdx) {
-    if (upsellSelections[priceId]) {
-      changeQty(priceId, cardIdx, -Number(upsellSelections[priceId].quantity || 1));
-      return;
-    }
-    addUpsell(priceId, cardIdx);
-  }
+  // ── Clear cart ───────────────────────────────────────────────────────────
+  document.getElementById('clearCartBtn').addEventListener('click', () => {
+    if (confirm('Clear all items from your cart?')) window.Cart.clear();
+  });
 
-  function addUpsell(priceId, cardIdx) {
-    upsellSelections[priceId] = { quantity: 1 };
-    const card  = document.getElementById(`ucard-${cardIdx}`);
-    const btn   = document.getElementById(`abtn-${cardIdx}`);
-    const qrow  = document.getElementById(`qrow-${cardIdx}`);
-    const badge = document.getElementById(`cbadge-${cardIdx}`);
-    card.classList.add('selected');
-    btn.style.display  = 'none';
-    qrow.style.display = 'flex';
-    badge.textContent  = '1';
-    updateCartDisplay();
-  }
-
-  function changeQty(priceId, cardIdx, delta) {
-    const current = Number(upsellSelections[priceId]?.quantity || 0);
-    const next    = current + delta;
-    const card    = document.getElementById(`ucard-${cardIdx}`);
-    const btn     = document.getElementById(`abtn-${cardIdx}`);
-    const qrow    = document.getElementById(`qrow-${cardIdx}`);
-    const badge   = document.getElementById(`cbadge-${cardIdx}`);
-
-    if (next <= 0) {
-      delete upsellSelections[priceId];
-      card.classList.remove('selected');
-      qrow.style.display = 'none';
-      btn.style.display  = 'block';
-      badge.textContent  = '1';
-    } else {
-      if (!upsellSelections[priceId]) upsellSelections[priceId] = { quantity: 0 };
-      upsellSelections[priceId].quantity = next;
-      document.getElementById(`qnum-${cardIdx}`).textContent = next;
-      badge.textContent = next;
-    }
-    updateCartDisplay();
-  }
-
-  // ── CHECKOUT ─────────────────────────────────────
+  // ── Checkout ─────────────────────────────────────────────────────────────
   async function proceedToCheckout() {
     const btn = document.getElementById('checkoutBtn');
-    btn.innerHTML = '<span class="spinner"></span> Redirecting...';
-    btn.disabled = true;
+    const items = window.Cart.getItems();
+    if (!items.length) return;
 
-    const items = [{ price: mainPriceId, quantity: 1 }];
-    for (const [pid, selection] of Object.entries(upsellSelections)) {
-      const quantity = Number(selection?.quantity || 0);
-      if (quantity <= 0) continue;
-      items.push({ price: pid, quantity });
-    }
+    btn.innerHTML = '<span class="spinner"></span> Redirecting…';
+    btn.disabled = true;
 
     function getCookie(name) {
       const value = `; ${document.cookie}`;
@@ -534,26 +671,47 @@
       const res = await fetch(`${BACKEND_URL}/api/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, pickup: isPickup, referral })
+        body: JSON.stringify({
+          items: items.map(x => ({ price: x.priceId, quantity: x.quantity })),
+          pickup: false,
+          referral,
+        }),
       });
-      if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.error||'Checkout failed'); }
-      const { sessionId } = await res.json();
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        throw new Error(e.error || `Server responded with ${res.status}`);
+      }
+      const { sessionId, url } = await res.json();
+      if (url) {
+        window.location.href = url;
+        return;
+      }
       const { error } = await stripe.redirectToCheckout({ sessionId });
       if (error) throw error;
-    } catch(err) {
-      alert('⚠️ ' + err.message);
-      btn.innerHTML = '🛒 Continue to Checkout';
+    } catch (err) {
+      alert('⚠️ ' + (err.message || 'Checkout failed. Please try again.'));
+      btn.innerHTML = '🔒 Continue to Checkout';
       btn.disabled = false;
     }
   }
+  document.getElementById('checkoutBtn').addEventListener('click', proceedToCheckout);
 
-  function skipUpsell() {
-    upsellSelections = {};
-    proceedToCheckout();
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  function boot() {
+    migrateLegacyQuery();
+    renderCart();
+    window.Cart.subscribe(() => {
+      renderCart();
+    });
+    loadProducts();
   }
 
-  // FIX B: was `init()` — must match the function name above
-  initialize();
+  // Wait for Cart to be ready (cart.js uses defer; boot at DOMContentLoaded)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 </script>
 </body>
 </html>
