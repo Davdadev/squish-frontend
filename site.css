@@ -69,7 +69,7 @@ body::before {
   background: var(--dark); border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.7rem; animation: wiggle 3s ease-in-out infinite;
-  box-shadow: 2px 2px 0 var(--yellow);
+  
 }
 @keyframes wiggle { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
 .site-header-logo-texts {
@@ -98,18 +98,18 @@ body::before {
   border: 2.5px solid var(--dark);
   border-radius: 100px;
   text-decoration: none;
-  box-shadow: 2px 2px 0 var(--yellow);
+ 
   transition: all .15s;
   letter-spacing: .2px;
 }
 .site-header-nav a:hover {
   background: var(--pink); color: #fff;
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--yellow);
+  
 }
 .site-header-nav a.active {
   background: var(--yellow); color: var(--dark);
-  box-shadow: 2px 2px 0 var(--dark);
+  
 }
 
 .site-header-blobs { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
@@ -236,7 +236,7 @@ main {
 .filter-btn.active {
   background: var(--dark); color: var(--yellow);
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--orange);
+  
 }
 
 /* ============================================================================
@@ -348,7 +348,6 @@ main {
   display: flex; align-items: center; justify-content: center;
   transition: all .15s; padding: 0;
 }
-.qty-stepper button:hover { background: var(--orange); transform: scale(1.1); }
 .qty-stepper .qty-num {
   font-family: 'Lilita One', cursive;
   font-size: 1.05rem; min-width: 22px;
