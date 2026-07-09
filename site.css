@@ -20,6 +20,14 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* html also needs overflow-x hidden, not just body: the off-canvas cart
+   drawer (fixed, translated out of view) otherwise widens the scrollable
+   area and can flash into view during mobile rubber-band overscroll. */
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--bg);
@@ -94,11 +102,13 @@ body::before {
   font-family: 'Fredoka One', cursive;
   font-size: .9rem;
   padding: .45rem 1rem;
+  min-height: 40px;
+  display: inline-flex; align-items: center;
   background: var(--dark); color: #fff9f0;
   border: 2.5px solid var(--dark);
   border-radius: 100px;
   text-decoration: none;
- 
+
   transition: all .15s;
   letter-spacing: .2px;
 }
@@ -152,11 +162,15 @@ body::before {
 .site-header.compact .site-header-inner { padding-bottom: 1.4rem; }
 
 @media (max-width: 720px) {
-  .site-header-inner { padding: 1rem 1rem .8rem; gap: .7rem; }
+  /* Extra right padding keeps the logo clear of the fixed cart button
+     (injected by cart.js, top-right of every page) so they never overlap. */
+  .site-header-inner { padding: 1rem 5rem .8rem 1rem; gap: .7rem; }
+  .site-header-logo { min-width: 0; }
   .site-header-logo-icon { width: 40px; height: 40px; font-size: 1.4rem; }
+  .site-header-logo-texts { min-width: 0; }
   .site-header-logo-title { font-size: 1.4rem; }
   .site-header-logo-sub { font-size: .65rem; letter-spacing: 1.5px; }
-  .site-header-nav a { font-size: .78rem; padding: .35rem .8rem; }
+  .site-header-nav a { font-size: .82rem; padding: .55rem 1rem; }
   .site-header-title { font-size: 2.3rem; padding: 0 .6rem; }
   .site-header-subtext { font-size: 1rem; padding: .4rem .9rem; margin: .7rem auto 1.1rem; }
   .site-header-blob-1 { width: 100px; height: 100px; left: -20px; top: -30px; }
@@ -643,9 +657,29 @@ main {
 }
 
 @media (max-width: 600px) {
-  main { padding: 2rem 1rem; }
+  main { padding: 1.6rem 1rem; }
   .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; }
   .card-image-wrap { height: 180px; }
+  .qty-stepper button { width: 32px; height: 32px; }
+  .modal-close { width: 40px; height: 40px; }
+
+  /* Payment badges next to the title just crowd the fold on mobile —
+     they're already shown in the footer, so hide them here. */
+  .section-title .pm-row { display: none; }
+
+  /* Turn the sort chips into a single horizontally-scrollable row
+     instead of an awkward two-line wrap. */
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: .3rem;
+    margin-left: -1rem; margin-right: -1rem;
+    padding-left: 1rem; padding-right: 1rem;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-label, .filter-btn { flex-shrink: 0; }
 }
 
 /* ============================================================================
