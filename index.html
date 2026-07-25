@@ -20,7 +20,7 @@
 <header class="site-header">
   <div class="site-header-inner">
     <a class="site-header-logo" href="index.html">
-      <span class="site-header-logo-icon" aria-hidden="true">🎲</span>
+      <span class="site-header-logo-icon" aria-hidden="true"></span>
       <span class="site-header-logo-texts">
         <span class="site-header-logo-title">3Dfidgets.shop</span>
         <span class="site-header-logo-sub">3D printed fidgets for all ages</span>
@@ -44,9 +44,7 @@
 
 <!-- ============ TICKER ============ -->
 <div class="ticker">
-  <span class="ticker-inner">
-    🚚 FREE DELIVERY ON ORDERS OVER $50 &nbsp;•&nbsp; 🖨️ 3D PRINTED WITH LOVE &nbsp;•&nbsp; 🧠 ADHD &amp; AUTISM FRIENDLY &nbsp;•&nbsp; ✨ AUSTRALIA WIDE &nbsp;•&nbsp; 🚚 FREE DELIVERY ON ORDERS OVER $50 &nbsp;•&nbsp; 🖨️ 3D PRINTED WITH LOVE &nbsp;•&nbsp;
-  </span>
+  <span class="ticker-inner">FREE DELIVERY ON ORDERS OVER $50 &nbsp;•&nbsp; 3D PRINTED WITH LOVE &nbsp;•&nbsp; ADHD &amp; AUTISM FRIENDLY &nbsp;•&nbsp; AUSTRALIA WIDE</span>
 </div>
 
 <!-- ============ MAIN ============ -->
@@ -90,7 +88,7 @@
 <section class="seo-section">
   <div class="seo-inner">
     <div class="seo-card">
-      <div class="seo-card-title">🖨️ Why 3Dfidgets.shop?</div>
+      <div class="seo-card-title">Why 3Dfidgets.shop?</div>
       <p>Australia's home of <strong>3D printed fidget toys</strong> for kids and adults. Every toy is handcrafted with <strong>eco-friendly PLA plastic</strong> — durable, lightweight, and safe for all ages. Our sensory fidgets are loved by families managing <strong>ADHD, autism, anxiety,</strong> and sensory processing needs. Perfect as gifts, classroom tools, or occupational therapy aids. <strong>Free delivery on orders over $50</strong>, shipped Australia-wide to Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Darwin, and Canberra.</p>
     </div>
   </div>
@@ -102,7 +100,7 @@
     <div class="footer-top">
       <div>
         <div class="footer-brand">3Dfidgets.shop</div>
-        <p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament. 🖨️</p>
+        <p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament.</p>
       </div>
       <div>
         <div class="footer-title">Quick Links</div>
@@ -130,7 +128,7 @@
       <img src="images/GooglePay.png" alt="Google Pay" title="Google Pay" width="60" height="40" loading="lazy"/>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
+      <div class="footer-copy">Made with care &amp; filament · Payments secured by Stripe</div>
       <div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div>
     </div>
   </div>
@@ -139,7 +137,7 @@
 <script src="cart.js" defer></script>
 <script>
   const BACKEND_URL = 'https://nkqqzklajidxqjbqyqlo.supabase.co/functions/v1/squish-backend';
-  const EMOJIS = ['🦅','🌀','🎯','⭐','🧩','🎪','🎨','🎭','🎰','🎳'];
+  const EMOJIS = [''];
   const COLORS = ['#FFD93D','#4ECDC4','#FF4D8D','#A855F7','#6BCB77','#FF6B35','#60A5FA','#F472B6'];
 
   let allProducts = [];
@@ -214,7 +212,7 @@
     const grid = document.getElementById('productsGrid');
     const sorted = sortedProducts();
     if (!sorted.length) {
-      grid.innerHTML = `<div class="empty-state"><div class="big-emoji">🏗️</div><h3>New drops coming soon!</h3><p>The printer is warming up.</p></div>`;
+      grid.innerHTML = `<div class="empty-state"><div class="big-emoji"></div><h3>New drops coming soon!</h3><p>The printer is warming up.</p></div>`;
       return;
     }
     grid.innerHTML = sorted.map((p,i) => {
@@ -322,10 +320,10 @@
         <div class="modal-name">${esc(p.name)}</div>
         <div class="modal-desc">${esc(p.description||'A beautifully crafted 3D printed fidget toy.')}</div>
         <div class="modal-meta">
-          <span class="meta-pill">🖨️ 3D Printed</span>
-          <span class="meta-pill">🌱 Eco PLA</span>
-          <span class="meta-pill">🚚 Standard $10 · Express $15</span>
-          ${inStock?'<span class="meta-pill" style="background:#d1fae5">✅ In Stock</span>':'<span class="meta-pill" style="background:#fee2e2">❌ Sold Out</span>'}
+          <span class="meta-pill">3D Printed</span>
+          <span class="meta-pill">Eco PLA</span>
+          <span class="meta-pill">Standard $10 · Express $15</span>
+          ${inStock?'<span class="meta-pill" style="background:#d1fae5">In Stock</span>':'<span class="meta-pill" style="background:#fee2e2">Sold Out</span>'}
         </div>
         <div class="modal-footer">
           <div class="modal-price">${sym}${price}</div>
@@ -336,7 +334,7 @@
               <button data-action="qty-inc" aria-label="Increase quantity">+</button>
             </div>
             <button class="modal-buy-btn" id="modalAddBtn" ${inStock?'':'disabled'}>
-              ${inStock?'🛒 Add to Cart':'Sold Out'}
+              ${inStock?'Add to Cart':'Sold Out'}
             </button>
           </div>
         </div>
@@ -387,10 +385,10 @@
   function showError(msg) {
     document.getElementById('productsGrid').innerHTML = `
       <div class="error-state">
-        <div class="error-icon">😵</div>
+        <div class="error-icon">!</div>
         <div class="error-title">Couldn't load products</div>
         <div class="error-msg">${esc(msg)}</div>
-        <button class="retry-btn" id="retryBtn">🔄 Try Again</button>
+        <button class="retry-btn" id="retryBtn">Try Again</button>
       </div>`;
     document.getElementById('retryBtn').addEventListener('click', loadProducts);
   }
@@ -400,10 +398,10 @@
   const params = new URLSearchParams(location.search);
   if (params.get('success') === 'true') {
     window.Cart && window.Cart.clear();
-    setTimeout(() => window.Cart && window.Cart.toast('🎉 Order placed! Thanks so much!'), 400);
+    setTimeout(() => window.Cart && window.Cart.toast('Order placed! Thanks so much!'), 400);
     history.replaceState({}, '', location.pathname);
   } else if (params.get('canceled') === 'true') {
-    setTimeout(() => window.Cart && window.Cart.toast('👋 Checkout canceled — come back any time!'), 400);
+    setTimeout(() => window.Cart && window.Cart.toast('Checkout canceled — come back any time!'), 400);
     history.replaceState({}, '', location.pathname);
   }
 </script>

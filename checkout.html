@@ -347,7 +347,7 @@
 <header class="site-header compact">
   <div class="site-header-inner">
     <a class="site-header-logo" href="index.html">
-      <span class="site-header-logo-icon" aria-hidden="true">🎲</span>
+      <span class="site-header-logo-icon" aria-hidden="true"></span>
       <span class="site-header-logo-texts">
         <span class="site-header-logo-title">3Dfidgets.shop</span>
         <span class="site-header-logo-sub">3D printed fidgets for all ages</span>
@@ -368,7 +368,7 @@
 </header>
 
 <main class="checkout-main">
-  <h1 class="checkout-title">🛒 Your Cart <span id="cartHeaderPill" class="cart-count-pill" style="display:none">0 items</span></h1>
+  <h1 class="checkout-title">Your Cart <span id="cartHeaderPill" class="cart-count-pill" style="display:none">0 items</span></h1>
 
   <div class="checkout-grid">
     <div>
@@ -381,7 +381,7 @@
       </section>
 
       <div class="upsell-block" id="upsellBlock" style="display:none">
-        <div class="upsell-head">✨ You might also like</div>
+        <div class="upsell-head">You might also like</div>
         <div class="upsell-grid" id="upsellGrid">
           <div class="loader-row"><div class="loader"></div><br>Loading recommendations...</div>
         </div>
@@ -394,7 +394,7 @@
 
         <div class="ship-bar" id="shipBar">
           <div class="ship-bar-label">
-            <span id="shipBarText">🚚 Add more to unlock free shipping!</span>
+            <span id="shipBarText">Add more to unlock free shipping!</span>
             <span class="goal">$50</span>
           </div>
           <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
@@ -422,7 +422,7 @@
         </div>
 
         <button class="checkout-btn" id="checkoutBtn">
-          🔒 Continue to Checkout
+          Continue to Checkout
         </button>
         <div class="secure-note">Payments secured by <strong>Stripe</strong> · You'll be redirected to a secure page.</div>
       </div>
@@ -435,7 +435,7 @@
     <div class="footer-top">
       <div>
         <div class="footer-brand">3Dfidgets.shop</div>
-        <p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament. 🖨️</p>
+        <p class="footer-tagline">3D printed fidget toys, handcrafted in Australia with love and filament.</p>
       </div>
       <div>
         <div class="footer-title">Quick Links</div>
@@ -463,7 +463,7 @@
       <img src="images/GooglePay.png" alt="Google Pay" width="60" height="40" loading="lazy"/>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
+      <div class="footer-copy">Made with care &amp; filament · Payments secured by Stripe</div>
       <div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div>
     </div>
   </div>
@@ -478,7 +478,7 @@
   const STANDARD_SHIPPING = 1000; // $10 default if not over threshold
 
   const stripe = Stripe(STRIPE_PK);
-  const EMOJIS = ['🦅','🌀','🎯','⭐','🧩','🎪','🎨','🎭','🎰','🎳'];
+  const EMOJIS = [''];
   const COLORS = ['#FFD93D','#4ECDC4','#FF4D8D','#A855F7','#6BCB77','#FF6B35','#60A5FA','#F472B6'];
 
   let allProducts = [];
@@ -613,8 +613,8 @@
 
     if (!items.length) {
       linesEl.innerHTML = `
-        <div class="cart-empty-box">
-          <span class="emoji">🦅</span>
+          <div class="cart-empty-box">
+            <span class="emoji"></span>
           <h3>Your cart is empty</h3>
           <p>Find some fidgets you love and add them here!</p>
           <a class="cta" href="index.html">Browse fidgets</a>
@@ -689,8 +689,8 @@
       ? '—'
       : (freeShipping
         ? (freeShippingCoupon && subtotal < FREE_SHIPPING_THRESHOLD
-          ? '<span class="free">FREE 🏷️</span>'
-          : '<span class="free">FREE 🎉</span>')
+          ? '<span class="free">FREE</span>'
+          : '<span class="free">FREE</span>')
         : fmt(shipping, cur));
     document.getElementById('sumTotal').innerHTML = `<span class="val">${fmt(total, cur)}</span>`;
 
@@ -700,10 +700,10 @@
     document.getElementById('shipBarText').innerHTML = isEmpty
       ? 'Add items to unlock free shipping'
       : (freeShippingCoupon && subtotal < FREE_SHIPPING_THRESHOLD
-        ? '🏷️ Free shipping coupon applied!'
+        ? 'Free shipping coupon applied!'
         : (toGo > 0
           ? `Add <strong>${fmt(toGo, cur)}</strong> more for FREE shipping!`
-          : `🎉 Free shipping unlocked!`));
+          : `Free shipping unlocked!`));
 
     const btn = document.getElementById('checkoutBtn');
     btn.disabled = isEmpty;
@@ -811,8 +811,8 @@
       const { error } = await stripe.redirectToCheckout({ sessionId });
       if (error) throw error;
     } catch (err) {
-      alert('⚠️ ' + (err.message || 'Checkout failed. Please try again.'));
-      btn.innerHTML = '🔒 Continue to Checkout';
+      alert((err.message || 'Checkout failed. Please try again.'));
+      btn.innerHTML = 'Continue to Checkout';
       btn.disabled = false;
     }
   }

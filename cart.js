@@ -101,7 +101,7 @@
         });
       }
       saveItems();
-      Cart.toast(`✨ Added ${qty} × ${product.name || 'item'} to cart`);
+        Cart.toast(`✨ Added ${qty} × ${product.name || 'item'} to cart`);
     },
 
     setQty(priceId, qty) {
@@ -484,7 +484,7 @@
     if (!items.length) {
       body.innerHTML = `
         <div class="cart-empty">
-          <span class="cart-empty-emoji">🦅</span>
+          <span class="cart-empty-emoji">🛒</span>
           <h3>Your cart is empty</h3>
           <p>Find a fidget you love and add it here!</p>
           <a class="cart-empty-cta" href="index.html">Browse fidgets</a>
@@ -495,7 +495,7 @@
     body.innerHTML = items.map((x) => {
       const imgHtml = x.image
         ? `<img src="${Cart.esc(x.image)}" alt="${Cart.esc(x.name)}" />`
-        : `<span>🎲</span>`;
+        : `<span></span>`;
       return `
         <div class="cart-line">
           <div class="cart-line-img">${imgHtml}</div>
@@ -531,8 +531,8 @@
     const toGo = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
     const pct = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
     const shipMsg = toGo > 0
-      ? `🚚 Add <strong>${sym}${(toGo/100).toFixed(2)}</strong> more for <strong>FREE</strong> shipping!`
-      : `🎉 You've unlocked <strong>FREE</strong> shipping!`;
+      ? `Add <strong>${sym}${(toGo/100).toFixed(2)}</strong> more for <strong>FREE</strong> shipping!`
+      : `You've unlocked <strong>FREE</strong> shipping!`;
 
     foot.innerHTML = `
       <div class="cart-ship-bar">

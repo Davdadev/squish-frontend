@@ -77,8 +77,13 @@ body::before {
   background: var(--dark); border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.7rem; animation: wiggle 3s ease-in-out infinite;
-  
 }
+
+/* Hide the logo box (requested) but keep layout intact */
+.site-header-logo-icon { display: none; }
+
+/* Header cart button placed in the header next to nav */
+/* header cart removed — using floating FAB cart */
 @keyframes wiggle { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
 .site-header-logo-texts {
   display: flex; flex-direction: column; gap: 2px; line-height: 1;

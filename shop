@@ -37,7 +37,7 @@
 <header class="custom-header">
   <div class="header-content">
     <div class="header-logo">
-      <span class="header-logo-icon">🎲</span>
+      <span class="header-logo-icon"></span>
       <div class="header-logo-texts">
         <span class="header-logo-title">3Dfidgets.shop</span>
         <span class="header-logo-sub">3d printed fidgets for all ages</span>
@@ -125,7 +125,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">Made with <span>♥</span> &amp; filament · Payments secured by Stripe 🔒</div>
+      <div class="footer-copy">Made with care &amp; filament · Payments secured by Stripe</div>
       <div class="footer-note">© 2026 3Dfidgets.shop · Australia Wide</div>
     </div>
   </div>
